@@ -2491,6 +2491,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4":
+  version: 4.17.24
+  resolution: "@types/lodash@npm:4.17.24"
+  checksum: 10c0/b72f60d4daacdad1fa643edb3faba204c02a01eb1ac00a83ff73496a6d236fc55e459c06106e8ced42277dba932d087d8fc090f8de4ef590d3f91e6d6f7ce85a
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^24.12.0":
   version: 24.12.0
   resolution: "@types/node@npm:24.12.0"
@@ -4824,6 +4831,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash@npm:^4.17.23":
+  version: 4.17.23
+  resolution: "lodash@npm:4.17.23"
+  checksum: 10c0/1264a90469f5bb95d4739c43eb6277d15b6d9e186df4ac68c3620443160fc669e2f14c11e7d8b2ccf078b81d06147c01a8ccced9aab9f9f63d50dcf8cace6bf6
+  languageName: node
+  linkType: hard
+
 "log-symbols@npm:^6.0.0":
   version: 6.0.0
   resolution: "log-symbols@npm:6.0.0"
@@ -6605,6 +6619,7 @@ __metadata:
     "@fontsource-variable/public-sans": "npm:^5.2.7"
     "@remixicon/react": "npm:^4.9.0"
     "@tailwindcss/vite": "npm:^4.2.1"
+    "@types/lodash": "npm:^4"
     "@types/node": "npm:^24.12.0"
     "@types/react": "npm:^19.2.14"
     "@types/react-dom": "npm:^19.2.3"
@@ -6616,6 +6631,7 @@ __metadata:
     eslint-plugin-react-refresh: "npm:^0.5.2"
     globals: "npm:^17.4.0"
     init: "npm:^0.1.2"
+    lodash: "npm:^4.17.23"
     lucide-react: "npm:^0.577.0"
     path: "npm:^0.12.7"
     radix-ui: "npm:^1.4.3"

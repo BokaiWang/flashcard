@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, type FC, type PropsWithChildren } from "react";
 import FlashcardFront from "./FlashcardFront";
 import FlashcardBack from "./FlashcardBack";
 import { cn } from "@/lib/utils";
+import type { AnswerState, FlashcardType } from "@/types";
 
-const Flashcard = () => {
+interface Props {
+  flashcard: FlashcardType;
+  onAnswer: (answer: AnswerState) => void;
+}
+
+const Flashcard: FC<PropsWithChildren<Props>> = ({ flashcard, onAnswer }) => {
   const [flipped, setFlipped] = useState(false);
   const flipCard = () => setFlipped(!flipped);
   return (
@@ -14,8 +20,8 @@ const Flashcard = () => {
       )}
       onClick={flipCard}
     >
-      <FlashcardFront />
-      <FlashcardBack />
+      <FlashcardFront flashcard={flashcard} />
+      <FlashcardBack flashcard={flashcard} onAnswer={onAnswer} />
     </div>
   );
 };

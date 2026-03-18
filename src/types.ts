@@ -1,6 +1,8 @@
 type WordType = "名詞" | "副詞" | "助詞" | "い形容詞" | "な形容詞" | "動詞";
 
-export type Flashcard = {
+export type AnswerState = "NOT_FAMILIAR" | "REMEMBERED" | "FORGOT";
+
+export type FlashcardType = {
   id: string;
 
   // core
@@ -16,6 +18,7 @@ export type Flashcard = {
   example?: string;
   exampleReading?: string;
   exampleMeaning?: string;
+  answerState: AnswerState;
 
   deckId: string;
 
