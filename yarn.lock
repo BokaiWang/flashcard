@@ -508,6 +508,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource-variable/public-sans@npm:^5.2.7":
+  version: 5.2.7
+  resolution: "@fontsource-variable/public-sans@npm:5.2.7"
+  checksum: 10c0/2d000141945217da65d580ba386f12f65ca27c42079bfeaa8476923a26b83d5fe4b7eacf8d986d3c274fdfcb0fb20fbc0e0adb0a499de4f8c0ef0b4cff24e106
+  languageName: node
+  linkType: hard
+
 "@gar/promise-retry@npm:^1.0.0":
   version: 1.0.2
   resolution: "@gar/promise-retry@npm:1.0.2"
@@ -2139,6 +2146,15 @@ __metadata:
   version: 1.1.1
   resolution: "@radix-ui/rect@npm:1.1.1"
   checksum: 10c0/0dac4f0f15691199abe6a0e067821ddd9d0349c0c05f39834e4eafc8403caf724106884035ae91bbc826e10367e6a5672e7bec4d4243860fa7649de246b1f60b
+  languageName: node
+  linkType: hard
+
+"@remixicon/react@npm:^4.9.0":
+  version: 4.9.0
+  resolution: "@remixicon/react@npm:4.9.0"
+  peerDependencies:
+    react: ">=18.2.0"
+  checksum: 10c0/91bbadb677f45cf8b6687fdf9d273511fddb4e862f1da6c11bc7932acb578bcb26ae5b9e1eb62143a4e916b71797739a36d689866d5b0949f0f0f22c1684cb96
   languageName: node
   linkType: hard
 
@@ -6586,6 +6602,8 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:^9.39.4"
     "@fontsource-variable/inter": "npm:^5.2.8"
+    "@fontsource-variable/public-sans": "npm:^5.2.7"
+    "@remixicon/react": "npm:^4.9.0"
     "@tailwindcss/vite": "npm:^4.2.1"
     "@types/node": "npm:^24.12.0"
     "@types/react": "npm:^19.2.14"
