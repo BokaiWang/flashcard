@@ -2,7 +2,7 @@ import React from "react";
 
 const FlashcardFront = () => {
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="absolute backface-hidden flex flex-col justify-center items-center">
       <p>
         単語<span>2</span>
       </p>
