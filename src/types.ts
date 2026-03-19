@@ -1,9 +1,9 @@
 type WordType = "名詞" | "副詞" | "助詞" | "い形容詞" | "な形容詞" | "動詞";
 
 export enum LearningState {
+  NEW = "NEW",
   NOT_FAMILIAR = "NOT_FAMILIAR",
-  REMEMBERED = "REMEMBERED",
-  FORGOT = "FORGOT",
+  MASTERED = "MASTERED",
 }
 
 export type FlashcardType = {

@@ -18,7 +18,7 @@ const FlashcardControls: FC<PropsWithChildren<Props>> = ({
       <Button
         onClick={(e) => {
           e.stopPropagation();
-          onAnswer(LearningState.FORGOT);
+          onAnswer(LearningState.NEW);
           if (!isLastCard) {
             flipCard();
           }
@@ -42,7 +42,7 @@ const FlashcardControls: FC<PropsWithChildren<Props>> = ({
       <Button
         onClick={(e) => {
           e.stopPropagation();
-          onAnswer(LearningState.REMEMBERED);
+          onAnswer(LearningState.MASTERED);
           if (!isLastCard) {
             flipCard();
           }

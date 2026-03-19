@@ -1,7 +1,7 @@
 import React, { useState, type FC, type PropsWithChildren } from "react";
 import Flashcard from "./Flashcard";
 import type { LearningState, DeckType, FlashcardType } from "@/types";
-import StatusCard from "./StatusCard";
+import StatusCard from "./ResultCard";
 
 interface Props {
   deck: DeckType;
