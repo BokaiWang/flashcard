@@ -1,21 +1,55 @@
 import React, { type FC, type PropsWithChildren } from "react";
 import { Button } from "./ui/button";
-import type { AnswerState } from "@/types";
+import { LearningState } from "@/types";
 
 interface Props {
-  onAnswer: (answer: AnswerState) => void;
+  onAnswer: (answer: LearningState) => void;
+  flipCard: () => void;
+  isLastCard: boolean;
 }
 
-const FlashcardControls: FC<PropsWithChildren<Props>> = ({ onAnswer }) => {
+const FlashcardControls: FC<PropsWithChildren<Props>> = ({
+  onAnswer,
+  flipCard,
+  isLastCard,
+}) => {
   return (
-    <div className="flex justify-between">
-      <Button onClick={() => onAnswer("FORGOT")} variant={"destructive"}>
+    <div className="flex justify-between w-full">
+      <Button
+        onClick={(e) => {
+          e.stopPropagation();
+          onAnswer(LearningState.FORGOT);
+          if (!isLastCard) {
+            flipCard();
+          }
+        }}
+        variant={"destructive"}
+      >
         Forgot
       </Button>
-      <Button onClick={() => onAnswer("NOT_FAMILIAR")} variant={"outline"}>
+      <Button
+        onClick={(e) => {
+          e.stopPropagation();
+          onAnswer(LearningState.NOT_FAMILIAR);
+          if (!isLastCard) {
+            flipCard();
+          }
+        }}
+        variant={"outline"}
+      >
         Not Familiar
       </Button>
-      <Button onClick={() => onAnswer("REMEMBERED")}>Remembered</Button>
+      <Button
+        onClick={(e) => {
+          e.stopPropagation();
+          onAnswer(LearningState.REMEMBERED);
+          if (!isLastCard) {
+            flipCard();
+          }
+        }}
+      >
+        Remembered
+      </Button>
     </div>
   );
 };

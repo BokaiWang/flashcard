@@ -1,28 +1,49 @@
 import React, { useState, type FC, type PropsWithChildren } from "react";
 import Flashcard from "./Flashcard";
-import type { AnswerState, FlashcardType } from "@/types";
+import type { LearningState, DeckType, FlashcardType } from "@/types";
+import StatusCard from "./StatusCard";
 
 interface Props {
-  deck: FlashcardType[];
+  deck: DeckType;
 }
 
 const Deck: FC<PropsWithChildren<Props>> = ({ deck }) => {
+  const { flashcards } = deck;
   const [readDeck, setReadDeck] = useState<FlashcardType[]>([]);
   const [flashcardIndex, setFlashcardIndex] = useState(0);
+  const [showStatus, setShowStatus] = useState(false);
+  const isLastCard = flashcardIndex === flashcards.length - 1;
 
-  const onAnswer = (answer: AnswerState) => {
+  const onAnswer = (answer: LearningState) => {
     setReadDeck([
       ...readDeck,
-      { ...deck[flashcardIndex], answerState: answer },
+      { ...flashcards[flashcardIndex], learningState: answer },
     ]);
-    if (flashcardIndex < deck.length - 1) {
+    if (!isLastCard) {
       setFlashcardIndex(flashcardIndex + 1);
+    } else {
+      setShowStatus(!showStatus);
     }
   };
 
   return (
     <div className="h-screen flex justify-center items-center">
-      <Flashcard flashcard={deck[flashcardIndex]} onAnswer={onAnswer} />
+      {showStatus ? (
+        <div
+          className={
+            "flex flex-col justify-center items-center w-96 h-1/2 bg-accent text-accent-foreground rounded-xl"
+          }
+        >
+          <StatusCard readDeck={readDeck} />
+        </div>
+      ) : (
+        <Flashcard
+          deck={deck}
+          flashcard={flashcards[flashcardIndex]}
+          onAnswer={onAnswer}
+          isLastCard={isLastCard}
+        />
+      )}
     </div>
   );
 };

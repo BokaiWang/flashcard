@@ -1,26 +1,23 @@
 type WordType = "名詞" | "副詞" | "助詞" | "い形容詞" | "な形容詞" | "動詞";
 
-export type AnswerState = "NOT_FAMILIAR" | "REMEMBERED" | "FORGOT";
+export enum LearningState {
+  NOT_FAMILIAR = "NOT_FAMILIAR",
+  REMEMBERED = "REMEMBERED",
+  FORGOT = "FORGOT",
+}
 
 export type FlashcardType = {
   id: string;
-
-  // core
   word: string; // 単語
-  reading: string; // たんご
+  pronunciation: string; // たんご
   meaning: string; // "word"
 
   // Japanese-specific
   wordType: WordType;
   pitchAccent: number; // 0, 1, 2, 3...
-
-  // optional learning helpers
   example?: string;
-  exampleReading?: string;
-  exampleMeaning?: string;
-  answerState: AnswerState;
-
-  deckId: string;
+  learningState: LearningState | null;
+  cloze: string;
 
   // spaced repetition (future)
   lastReviewedAt?: number;
@@ -28,7 +25,8 @@ export type FlashcardType = {
   interval?: number;
 };
 
-export type Deck = {
+export type DeckType = {
   id: string;
   name: string; // "N5 Vocabulary"
+  flashcards: FlashcardType[];
 };
