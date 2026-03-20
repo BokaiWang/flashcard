@@ -30,3 +30,15 @@ export type DeckType = {
   name: string; // "N5 Vocabulary"
   flashcards: FlashcardType[];
 };
+
+export enum Mode {
+  REVIEW = "REVIEW",
+  NEW = "NEW",
+  MIXED = "MIXED",
+  TEST = "TEST",
+}
+
+export type Option = {
+  title: string;
+  value: string;
+};
