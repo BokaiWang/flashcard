@@ -3,6 +3,8 @@ import HomePage from "./pages/HomePage";
 import LearningPage from "./pages/LearningPage";
 import StatusPage from "./pages/ResultPage";
 import StudyContextProvider from "./Context/StudyContextProvider";
+import { removeRoutePrefixForwardSlash } from "./helpers";
+import { Router } from "./routes.constants";
 
 function App() {
   return (
@@ -10,8 +12,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<HomePage />} />
-          <Route path="learning" element={<LearningPage />} />
-          <Route path="learning-result" element={<StatusPage />} />
+          <Route
+            path={removeRoutePrefixForwardSlash(Router.learningPage)}
+            element={<LearningPage />}
+          />
+          <Route
+            path={removeRoutePrefixForwardSlash(Router.resultPage)}
+            element={<StatusPage />}
+          />
         </Routes>
       </BrowserRouter>
     </StudyContextProvider>

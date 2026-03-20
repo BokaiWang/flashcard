@@ -1,11 +1,18 @@
 import React from "react";
 import PageContainer from "@/components/PageContainer";
 import { useStudy } from "@/customHooks/useStudy";
+import Deck from "@/components/Deck";
+import { JapaneseDecks } from "@/data/japaneseDecks";
 
 const LearningPage = () => {
-  const context = useStudy();
+  const { deck, wordNumber, customWordNumber, mode } = useStudy();
+  const selectedDeck = JapaneseDecks[deck];
 
-  return <PageContainer>Learning page</PageContainer>;
+  return (
+    <PageContainer>
+      <Deck deck={selectedDeck} />
+    </PageContainer>
+  );
 };
 
 export default LearningPage;

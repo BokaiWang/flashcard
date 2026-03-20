@@ -25,7 +25,7 @@ const Flashcard: FC<PropsWithChildren<Props>> = ({
   return (
     <div
       className={cn(
-        "perspective-distant flex flex-col justify-center items-center w-96 h-1/2 bg-accent text-accent-foreground rounded-xl transition-transform duration-500 transform-3d",
+        "perspective-distant flex flex-col justify-center items-center w-full h-full bg-accent text-accent-foreground rounded-xl transition-transform duration-500 transform-3d",
         flipped && "rotate-y-180",
       )}
       onClick={flipCard}

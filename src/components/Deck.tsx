@@ -1,7 +1,7 @@
 import React, { useState, type FC, type PropsWithChildren } from "react";
 import Flashcard from "./Flashcard";
 import type { LearningState, DeckType, FlashcardType } from "@/types";
-import StatusCard from "./ResultCard";
+import { useNavigate } from "react-router";
 
 interface Props {
   deck: DeckType;
@@ -11,8 +11,8 @@ const Deck: FC<PropsWithChildren<Props>> = ({ deck }) => {
   const { flashcards } = deck;
   const [readDeck, setReadDeck] = useState<FlashcardType[]>([]);
   const [flashcardIndex, setFlashcardIndex] = useState(0);
-  const [showStatus, setShowStatus] = useState(false);
   const isLastCard = flashcardIndex === flashcards.length - 1;
+  const navigate = useNavigate();
 
   const onAnswer = (answer: LearningState) => {
     setReadDeck([
@@ -22,29 +22,17 @@ const Deck: FC<PropsWithChildren<Props>> = ({ deck }) => {
     if (!isLastCard) {
       setFlashcardIndex(flashcardIndex + 1);
     } else {
-      setShowStatus(!showStatus);
+      navigate("/learning-result");
     }
   };
 
   return (
-    <div className="h-screen flex justify-center items-center">
-      {showStatus ? (
-        <div
-          className={
-            "flex flex-col justify-center items-center w-96 h-1/2 bg-accent text-accent-foreground rounded-xl"
-          }
-        >
-          <StatusCard readDeck={readDeck} />
-        </div>
-      ) : (
-        <Flashcard
-          deck={deck}
-          flashcard={flashcards[flashcardIndex]}
-          onAnswer={onAnswer}
-          isLastCard={isLastCard}
-        />
-      )}
-    </div>
+    <Flashcard
+      deck={deck}
+      flashcard={flashcards[flashcardIndex]}
+      onAnswer={onAnswer}
+      isLastCard={isLastCard}
+    />
   );
 };
 
