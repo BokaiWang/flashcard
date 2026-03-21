@@ -1,5 +1,6 @@
 export const Router = {
   homePage: "/home",
   learningPage: "/learning",
-  resultPage: "/learning-result",
+  learningResultPage: "/learning-result",
+  testResultPage: "/test-result",
 };

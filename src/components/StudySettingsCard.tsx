@@ -15,25 +15,25 @@ import {
   CardFooter,
 } from "./ui/card";
 import { useNavigate } from "react-router";
-import { useStudy } from "@/customHooks/useStudy";
-import { isEmpty } from "lodash";
+import { isEmpty, isNaN } from "lodash";
 import type { Mode } from "@/types";
+import useStudySettings from "@/store/studySettingsStore";
 
 const StudySettingsCard = () => {
   const navigate = useNavigate();
   const {
-    deck,
+    deckName,
     wordNumber,
     customWordNumber,
     mode,
-    setDeck,
+    setDeckName,
     setWordNumber,
     setCustomWordNumber,
     setMode,
-  } = useStudy();
+  } = useStudySettings();
 
   const shouldDisableGoButton =
-    isEmpty(deck) ||
+    isEmpty(deckName) ||
     (isEmpty(wordNumber) && isEmpty(customWordNumber)) ||
     isEmpty(mode);
 
@@ -46,7 +46,7 @@ const StudySettingsCard = () => {
       <CardContent className="flex flex-col gap-3 mt-10">
         <div>
           <SelectComponent
-            onSelect={(value) => setDeck(value)}
+            onSelect={(value) => setDeckName(value)}
             options={JapaneseDeckOptions}
             placeholder={"Select a deck"}
             label={"Select a deck"}
@@ -54,7 +54,9 @@ const StudySettingsCard = () => {
         </div>
         <div>
           <SelectComponent
-            onSelect={(value) => setWordNumber(value)}
+            onSelect={(value) =>
+              setWordNumber(isNaN(value) ? (value as "custom") : Number(value))
+            }
             options={WordNumberOptions}
             placeholder={"Select a number"}
             label={"How many words do you want to learn?"}
@@ -63,7 +65,7 @@ const StudySettingsCard = () => {
         {wordNumber === "custom" && (
           <InputComponent
             onChange={(e) => {
-              setCustomWordNumber(e.target.value);
+              setCustomWordNumber(Number(e.target.value));
             }}
             label={"Set a number"}
             placeholder={"Set a number"}

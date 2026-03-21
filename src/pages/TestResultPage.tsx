@@ -1,8 +1,8 @@
 import React from "react";
 import PageContainer from "@/components/PageContainer";
 
-const ResultPage = () => {
+const TestResultPage = () => {
   return <PageContainer>ResultPage</PageContainer>;
 };
 
-export default ResultPage;
+export default TestResultPage;

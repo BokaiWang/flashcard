@@ -1,4 +1,11 @@
-type WordType = "名詞" | "副詞" | "助詞" | "い形容詞" | "な形容詞" | "動詞";
+type WordType =
+  | "名詞"
+  | "副詞"
+  | "助詞"
+  | "い形容詞"
+  | "な形容詞"
+  | "動詞"
+  | string;
 
 export enum LearningState {
   NEW = "NEW",
@@ -20,8 +27,8 @@ export type FlashcardType = {
   cloze: string;
 
   // spaced repetition (future)
-  lastReviewedAt?: number;
-  nextReviewAt?: number;
+  lastReviewedAt?: Date;
+  nextReviewAt?: Date;
   interval?: number;
 };
 

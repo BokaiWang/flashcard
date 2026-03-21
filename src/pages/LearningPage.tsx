@@ -5,7 +5,7 @@ import Deck from "@/components/Deck";
 import { JapaneseDecks } from "@/data/japaneseDecks";
 
 const LearningPage = () => {
-  const { deck, wordNumber, customWordNumber, mode } = useStudy();
+  const { deck } = useStudy();
   const selectedDeck = JapaneseDecks[deck];
 
   return (
