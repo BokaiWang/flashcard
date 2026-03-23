@@ -2,17 +2,15 @@ import React, { useState, type FC, type PropsWithChildren } from "react";
 import FlashcardFront from "./FlashcardFront";
 import FlashcardBack from "./FlashcardBack";
 import { cn } from "@/lib/utils";
-import type { LearningState, DeckType, FlashcardType } from "@/types";
+import type { LearningState, FlashcardType } from "@/types";
 
 interface Props {
-  deck: DeckType;
   flashcard: FlashcardType;
   onAnswer: (answer: LearningState) => void;
   isLastCard: boolean;
 }
 
 const Flashcard: FC<PropsWithChildren<Props>> = ({
-  deck,
   flashcard,
   onAnswer,
   isLastCard,
@@ -30,9 +28,8 @@ const Flashcard: FC<PropsWithChildren<Props>> = ({
       )}
       onClick={flipCard}
     >
-      <FlashcardFront flashcard={flashcard} deck={deck} />
+      <FlashcardFront flashcard={flashcard} />
       <FlashcardBack
-        deck={deck}
         flashcard={flashcard}
         onAnswer={onAnswer}
         flipCard={flipCard}

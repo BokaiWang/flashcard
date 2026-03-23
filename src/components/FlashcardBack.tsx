@@ -1,5 +1,5 @@
 import React, { type FC, type PropsWithChildren } from "react";
-import type { LearningState, DeckType, FlashcardType } from "@/types";
+import type { LearningState, FlashcardType } from "@/types";
 import FlashcardControls from "./FlashcardControls";
 import PitchAccent from "./PitchAccent";
 import {
@@ -9,9 +9,9 @@ import {
   CardTitle,
   CardFooter,
 } from "@/components/ui/card";
+import useStudySettings from "@/store/studySettingsStore";
 
 interface Props {
-  deck: DeckType;
   flashcard: FlashcardType;
   onAnswer: (answer: LearningState) => void;
   flipCard: () => void;
@@ -19,16 +19,16 @@ interface Props {
 }
 
 const FlashcardBack: FC<PropsWithChildren<Props>> = ({
-  deck,
   flashcard,
   onAnswer,
   flipCard,
   isLastCard,
 }) => {
+  const deckName = useStudySettings.use.deckName();
   return (
     <Card className="absolute backface-hidden rotate-y-180 w-full h-full">
       <CardHeader>
-        <CardTitle className="text-2xl m-auto">{deck.name}</CardTitle>
+        <CardTitle className="text-2xl m-auto">{deckName}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col justify-center items-center gap-5 h-full text-2xl">
         <div className="flex gap-3 justify-center items-center">

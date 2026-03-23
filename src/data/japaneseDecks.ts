@@ -22,38 +22,9 @@ export const ModeOptions: Option[] = [
   { title: "Test", value: Mode.TEST },
 ];
 
-export const N3Deck: DeckType = {
-  id: "1",
-  name: "Japanese N3 Vocabulary",
-  flashcards: [
-    {
-      id: "1",
-      word: "単語",
-      pronunciation: "たんご",
-      meaning: "單字",
-      wordType: "名詞",
-      pitchAccent: 2,
-      example: "この単語を覚えてください。",
-      cloze: "この____を覚えてください。",
-      learningState: null,
-    },
-    {
-      id: "2",
-      word: "食べる",
-      pronunciation: "たべる",
-      meaning: "吃東西",
-      wordType: "動詞",
-      pitchAccent: 2,
-      example: "昼ご飯を食べましたか。",
-      cloze: "昼ご飯を________か。",
-      learningState: null,
-    },
-  ],
-};
-
 export const JapaneseDecks: { [key: string]: DeckType } = {
   N5: {
-    id: "1",
+    id: "N5",
     name: "Japanese N5 Vocabulary",
     flashcards: [
       {
@@ -83,7 +54,7 @@ export const JapaneseDecks: { [key: string]: DeckType } = {
     ],
   },
   N4: {
-    id: "1",
+    id: "N4",
     name: "Japanese N4 Vocabulary",
     flashcards: [
       {
@@ -111,7 +82,7 @@ export const JapaneseDecks: { [key: string]: DeckType } = {
     ],
   },
   N3: {
-    id: "1",
+    id: "N3",
     name: "Japanese N3 Vocabulary",
     flashcards: [
       // ===== 名詞 =====
@@ -376,7 +347,7 @@ export const JapaneseDecks: { [key: string]: DeckType } = {
     ],
   },
   N2: {
-    id: "1",
+    id: "N2",
     name: "Japanese N2 Vocabulary",
     flashcards: [
       {
@@ -404,7 +375,7 @@ export const JapaneseDecks: { [key: string]: DeckType } = {
     ],
   },
   N1: {
-    id: "1",
+    id: "N1",
     name: "Japanese N1 Vocabulary",
     flashcards: [
       {

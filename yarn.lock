@@ -2156,6 +2156,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@redux-devtools/extension@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@redux-devtools/extension@npm:4.0.0"
+  peerDependencies:
+    redux: ^3.1.0 || ^4.0.0 || ^5.0.0
+  checksum: 10c0/bb3b5b48245f4eb40ffc4384df31f7fe1a14cff2749f8a4058ae5d266436f33e1e97f633daf724e131fc69edfa5c2bcd0f9562bdf9493058fec813641961ccb6
+  languageName: node
+  linkType: hard
+
 "@remixicon/react@npm:^4.9.0":
   version: 4.9.0
   resolution: "@remixicon/react@npm:4.9.0"
@@ -6962,6 +6971,7 @@ __metadata:
     "@eslint/js": "npm:^9.39.4"
     "@fontsource-variable/inter": "npm:^5.2.8"
     "@fontsource-variable/public-sans": "npm:^5.2.7"
+    "@redux-devtools/extension": "npm:^4.0.0"
     "@remixicon/react": "npm:^4.9.0"
     "@tailwindcss/vite": "npm:^4.2.1"
     "@types/lodash": "npm:^4"

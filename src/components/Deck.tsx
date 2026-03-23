@@ -1,28 +1,33 @@
-import React, {
-  useMemo,
-  useState,
-  type FC,
-  type PropsWithChildren,
-} from "react";
+import React, { useEffect, useMemo, useState, type FC } from "react";
 import Flashcard from "./Flashcard";
-import { type LearningState, type DeckType, Mode } from "@/types";
+import { type LearningState, Mode } from "@/types";
 import { useNavigate } from "react-router";
-import { useStudy } from "@/customHooks/useStudy";
 import StudyCard from "./StudyCard";
 import { Router } from "@/routes.constants";
-import { useReadDeck } from "@/customHooks/useReadDeck";
 import { isEmpty } from "lodash";
 import { getStudyCards } from "@/helpers";
+import useStudySettings from "@/store/studySettingsStore";
+import { JapaneseDecks } from "@/data/japaneseDecks";
+import useLearningHistory from "@/store/learningHistoryStore";
 
-interface Props {
-  deck: DeckType;
-}
+const Deck: FC = () => {
+  const deckName = useStudySettings.use.deckName();
+  const wordNumber = useStudySettings.use.wordNumber();
+  const customWordNumber = useStudySettings.use.customWordNumber();
+  const mode = useStudySettings.use.mode();
+  const addNewDeck = useLearningHistory.use.addNewDeck();
+  const historyDecks = useLearningHistory.use.decks();
+  const updateLastReviewedAt =
+    useLearningHistory.use.updateCardLastReviewedAt();
 
-const Deck: FC<PropsWithChildren<Props>> = ({ deck }) => {
-  const { flashcards } = deck;
+  const selectedDeck = useMemo(() => {
+    if (isEmpty(historyDecks[deckName])) {
+      return JapaneseDecks[deckName];
+    }
+    return historyDecks[deckName];
+  }, [deckName, historyDecks]);
+  const { flashcards } = selectedDeck;
   const [studyCardIndex, setStudyCardIndex] = useState(0);
-  const { mode, wordNumber, customWordNumber } = useStudy();
-  const { readDeck, setReadDeck } = useReadDeck();
   const wordNumberToUse = !isEmpty(customWordNumber)
     ? customWordNumber
     : wordNumber;
@@ -36,10 +41,8 @@ const Deck: FC<PropsWithChildren<Props>> = ({ deck }) => {
   const navigate = useNavigate();
 
   const goNext = () => {
-    setReadDeck([
-      ...readDeck,
-      { ...studyCards[studyCardIndex], lastReviewedAt: new Date() },
-    ]);
+    const cardId = studyCards[studyCardIndex].id;
+    updateLastReviewedAt(deckName, cardId);
     if (isLastCard) {
       navigate(Router.learningResultPage);
     } else {
@@ -48,15 +51,10 @@ const Deck: FC<PropsWithChildren<Props>> = ({ deck }) => {
   };
 
   const goPrevious = () => {
-    setReadDeck([...readDeck.slice(0, readDeck.length)]);
     setStudyCardIndex(studyCardIndex - 1);
   };
 
   const onAnswer = (answer: LearningState) => {
-    setReadDeck([
-      ...readDeck,
-      { ...studyCards[studyCardIndex], learningState: answer },
-    ]);
     if (!isLastCard) {
       setStudyCardIndex(studyCardIndex + 1);
     } else {
@@ -64,10 +62,13 @@ const Deck: FC<PropsWithChildren<Props>> = ({ deck }) => {
     }
   };
 
+  useEffect(() => {
+    addNewDeck(selectedDeck);
+  }, [selectedDeck, addNewDeck]);
+
   if (mode !== Mode.TEST) {
     return (
       <StudyCard
-        deck={deck}
         flashcard={studyCards[studyCardIndex]}
         goNext={goNext}
         goPrevious={goPrevious}
@@ -77,7 +78,6 @@ const Deck: FC<PropsWithChildren<Props>> = ({ deck }) => {
   } else {
     return (
       <Flashcard
-        deck={deck}
         flashcard={studyCards[studyCardIndex]}
         onAnswer={onAnswer}
         isLastCard={isLastCard}

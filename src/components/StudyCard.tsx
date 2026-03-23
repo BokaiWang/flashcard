@@ -6,12 +6,12 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import type { DeckType, FlashcardType } from "@/types";
+import type { FlashcardType } from "@/types";
 import PitchAccent from "./PitchAccent";
 import { Button } from "./ui/button";
+import useStudySettings from "@/store/studySettingsStore";
 
 interface Props {
-  deck: DeckType;
   flashcard: FlashcardType;
   isFirstCard: boolean;
   goNext: () => void;
@@ -19,16 +19,16 @@ interface Props {
 }
 
 const StudyCard: FC<PropsWithChildren<Props>> = ({
-  deck,
   flashcard,
   isFirstCard,
   goNext,
   goPrevious,
 }) => {
+  const deckName = useStudySettings.use.deckName();
   return (
     <Card className="flex flex-col w-full h-full">
       <CardHeader>
-        <CardTitle className="text-2xl m-auto">{deck.name}</CardTitle>
+        <CardTitle className="text-2xl m-auto">{deckName}</CardTitle>
       </CardHeader>
       <CardContent className="text-4xl flex flex-col justify-center items-center gap-5 h-full mb-20">
         <div className="flex flex-col gap-3 justify-center items-center border-y w-full py-6">
@@ -47,11 +47,9 @@ const StudyCard: FC<PropsWithChildren<Props>> = ({
         </div>
       </CardContent>
       <CardFooter className="flex justify-around">
-        {!isFirstCard && (
-          <Button variant={"outline"} onClick={goPrevious}>
-            Previous
-          </Button>
-        )}
+        <Button disabled={isFirstCard} variant={"outline"} onClick={goPrevious}>
+          Previous
+        </Button>
         <Button onClick={goNext}>Next</Button>
       </CardFooter>
     </Card>

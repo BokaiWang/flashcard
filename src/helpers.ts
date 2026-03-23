@@ -1,3 +1,4 @@
+import { isNil } from "lodash";
 import { Mode, type FlashcardType } from "./types";
 
 export const removeRoutePrefixForwardSlash = (route: string) =>
@@ -19,11 +20,9 @@ export const getStudyCards = (
   count: number,
   mode: Mode | "",
 ) => {
-  const newCards = cards.filter((c) => c.learningState === null);
-  const reviewCards = cards.filter((c) => c.learningState !== null);
+  const newCards = cards.filter((c) => isEmpty(c.lastReviewedAt));
+  const reviewCards = cards.filter((c) => !isEmpty(c.learningState));
   let selected: FlashcardType[] = [];
-  console.log("new cards: ", newCards);
-  console.log("review cards: ", reviewCards);
   if (mode === Mode.MIXED) {
     selected = [
       ...shuffle(reviewCards).slice(0, Math.floor(count * 0.7)),
@@ -35,7 +34,12 @@ export const getStudyCards = (
     selected = [...shuffle(reviewCards).slice(0, count)];
   }
 
-  console.log("selected cards: ", selected);
-
   return shuffle(selected);
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const isEmpty = (value: any) =>
+  isNil(value) ||
+  value === false ||
+  (Object.keys(value).length === 0 && value.constructor === Object) ||
+  value.length === 0;

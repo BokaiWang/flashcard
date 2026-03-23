@@ -9,9 +9,9 @@ import {
 import { Button } from "./ui/button";
 import { ChartContainer, type ChartConfig } from "./ui/chart";
 import { Label, Pie, PieChart } from "recharts";
-import { useStudy } from "@/customHooks/useStudy";
 import { JapaneseDecks } from "@/data/japaneseDecks";
-import { useReadDeck } from "@/customHooks/useReadDeck";
+import { useNavigate } from "react-router";
+import useStudySettings from "@/store/studySettingsStore";
 
 const chartConfig = {
   unlearned: { label: "Unlearned", color: "var(--accent)" },
@@ -19,8 +19,8 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const StudyResultCard = () => {
-  const { deck: deckName } = useStudy();
-  const { readDeck } = useReadDeck();
+  const { deckName, resetStudySettings } = useStudySettings();
+  const navigate = useNavigate();
   const selectedDeck = JapaneseDecks[deckName];
   const totalCounts = selectedDeck.flashcards.length;
   const learnedCounts = readDeck.length;
@@ -35,6 +35,11 @@ const StudyResultCard = () => {
   ];
 
   const studiedPercentage = ((learnedCounts / totalCounts) * 100).toFixed(1);
+
+  const onFinish = () => {
+    resetStudySettings();
+    navigate("/");
+  };
 
   return (
     <Card className="flex flex-col w-full h-full">
@@ -90,7 +95,8 @@ const StudyResultCard = () => {
       </CardContent>
       <CardFooter className="flex justify-around mt-10 text-sm">
         <Button variant={"outline"}>Review</Button>
-        <Button>Finish</Button>
+        <Button>Start a new deck</Button>
+        <Button onClick={onFinish}>Finish</Button>
       </CardFooter>
     </Card>
   );

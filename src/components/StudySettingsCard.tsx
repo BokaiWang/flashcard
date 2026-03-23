@@ -15,22 +15,21 @@ import {
   CardFooter,
 } from "./ui/card";
 import { useNavigate } from "react-router";
-import { isEmpty, isNaN } from "lodash";
+import { isNaN } from "lodash";
 import type { Mode } from "@/types";
 import useStudySettings from "@/store/studySettingsStore";
+import { isEmpty } from "@/helpers";
 
 const StudySettingsCard = () => {
   const navigate = useNavigate();
-  const {
-    deckName,
-    wordNumber,
-    customWordNumber,
-    mode,
-    setDeckName,
-    setWordNumber,
-    setCustomWordNumber,
-    setMode,
-  } = useStudySettings();
+  const deckName = useStudySettings.use.deckName();
+  const wordNumber = useStudySettings.use.wordNumber();
+  const customWordNumber = useStudySettings.use.customWordNumber();
+  const mode = useStudySettings.use.mode();
+  const setDeckName = useStudySettings.use.setDeckName();
+  const setWordNumber = useStudySettings.use.setWordNumber();
+  const setCustomWordNumber = useStudySettings.use.setCustomWordNumber();
+  const setMode = useStudySettings.use.setMode();
 
   const shouldDisableGoButton =
     isEmpty(deckName) ||
@@ -54,9 +53,12 @@ const StudySettingsCard = () => {
         </div>
         <div>
           <SelectComponent
-            onSelect={(value) =>
-              setWordNumber(isNaN(value) ? (value as "custom") : Number(value))
-            }
+            onSelect={(value) => {
+              const convertedValue = Number(value);
+              setWordNumber(
+                isNaN(convertedValue) ? (value as "custom") : convertedValue,
+              );
+            }}
             options={WordNumberOptions}
             placeholder={"Select a number"}
             label={"How many words do you want to learn?"}

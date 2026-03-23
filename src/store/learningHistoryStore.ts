@@ -1,9 +1,12 @@
 import type { DeckType, LearningState } from "@/types";
 import { create } from "zustand";
-import { cloneDeep } from "lodash";
+import { cloneDeep, set as setLodash } from "lodash";
+import { isEmpty } from "@/helpers";
+import createSelectors from "./createSelectors";
+import { devtools } from "zustand/middleware";
 
 type LearningHistoryState = {
-  decks: DeckType[];
+  decks: { [key: string]: DeckType };
 };
 
 type LearningHistoryActions = {
@@ -16,41 +19,73 @@ type LearningHistoryActions = {
   updateCardLastReviewedAt: (deckName: string, cardId: string) => void;
 };
 
-const useLearningHistory = create<
+const useLearningHistoryBase = create<
   LearningHistoryState & LearningHistoryActions
->()((set) => ({
-  decks: [],
-  addNewDeck: (newDeck: DeckType) =>
-    set((prevState) => ({ decks: [...prevState.decks, newDeck] })),
-  updateCardLearningState: (
-    deckName: string,
-    cardId: string,
-    learningState: LearningState,
-  ) =>
-    set((prevState) => {
-      const cloned = cloneDeep(prevState);
-      const { decks } = cloned;
-      const indexToDeck = decks.findIndex((deck) => deckName === deck.name);
-      const indexToCard = decks[indexToDeck].flashcards.findIndex(
-        (card) => card.id === cardId,
-      );
-      cloned.decks[indexToDeck].flashcards[indexToCard].learningState =
-        learningState;
-      return cloned;
-    }, true),
+>()(
+  devtools((set) => ({
+    decks: {},
+    addNewDeck: (newDeck: DeckType) =>
+      set(
+        (prevState) => ({
+          decks: { ...prevState.decks, [newDeck.id]: { ...newDeck } },
+        }),
+        undefined,
+        "addNewDeck",
+      ),
+    updateCardLearningState: (
+      deckId: string,
+      cardId: string,
+      learningState: LearningState,
+    ) =>
+      set(
+        (prevState) => {
+          const cloned = cloneDeep(prevState);
+          const { decks } = cloned;
+          const selectedDeck = decks?.[deckId];
+          if (!isEmpty(selectedDeck)) {
+            const indexToCard = selectedDeck.flashcards.findIndex(
+              (card) => card.id === cardId,
+            );
 
-  updateCardLastReviewedAt: (deckName: string, cardId: string) =>
-    set((prevState) => {
-      const cloned = cloneDeep(prevState);
-      const { decks } = cloned;
-      const indexToDeck = decks.findIndex((deck) => deckName === deck.name);
-      const indexToCard = decks[indexToDeck].flashcards.findIndex(
-        (card) => card.id === cardId,
-      );
-      cloned.decks[indexToDeck].flashcards[indexToCard].lastReviewedAt =
-        new Date();
-      return cloned;
-    }, true),
-}));
+            const newDecks = setLodash(
+              decks,
+              [deckId, "flashcards", indexToCard, "learningState"],
+              learningState,
+            );
+
+            return { ...prevState, decks: { ...newDecks } };
+          }
+          return prevState;
+        },
+        true,
+        "updateCardLearningState",
+      ),
+
+    updateCardLastReviewedAt: (deckId: string, cardId: string) =>
+      set(
+        (prevState) => {
+          const cloned = cloneDeep(prevState);
+          const { decks } = cloned;
+          const selectedDeck = decks?.[deckId];
+          if (!isEmpty(selectedDeck)) {
+            const indexToCard = selectedDeck.flashcards.findIndex(
+              (card) => card.id === cardId,
+            );
+            const newDecks = setLodash(
+              decks,
+              [deckId, "flashcards", indexToCard, "lastReviewedAt"],
+              new Date(),
+            );
+            return { ...prevState, decks: { ...newDecks } };
+          }
+          return prevState;
+        },
+        true,
+        "updateCardLastReviewedAt",
+      ),
+  })),
+);
+
+const useLearningHistory = createSelectors(useLearningHistoryBase);
 
 export default useLearningHistory;
