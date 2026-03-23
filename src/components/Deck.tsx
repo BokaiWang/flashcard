@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState, type FC } from "react";
 import Flashcard from "./Flashcard";
 import { type LearningState, Mode } from "@/types";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import StudyCard from "./StudyCard";
 import { Router } from "@/routes.constants";
 import { isEmpty } from "lodash";
@@ -9,32 +9,52 @@ import { getStudyCards } from "@/helpers";
 import useStudySettings from "@/store/studySettingsStore";
 import { JapaneseDecks } from "@/data/japaneseDecks";
 import useLearningHistory from "@/store/learningHistoryStore";
+import { useShallow } from "zustand/react/shallow";
+import { studySettingsPropertySelector } from "@/selector/studySettings.selectors";
+import {
+  learningHistoryActionSelector,
+  learningHistoryPropertySelector,
+} from "@/selector/learningHistory.selectors";
 
 const Deck: FC = () => {
-  const deckName = useStudySettings.use.deckName();
-  const wordNumber = useStudySettings.use.wordNumber();
-  const customWordNumber = useStudySettings.use.customWordNumber();
-  const mode = useStudySettings.use.mode();
-  const addNewDeck = useLearningHistory.use.addNewDeck();
-  const historyDecks = useLearningHistory.use.decks();
-  const updateLastReviewedAt =
-    useLearningHistory.use.updateCardLastReviewedAt();
+  const { state: locationState } = useLocation();
+  const { deckName, wordNumber, customWordNumber, mode } = useStudySettings(
+    useShallow(studySettingsPropertySelector),
+  );
+
+  const { decks: historyDecks, lastUsedCards } = useLearningHistory(
+    useShallow(learningHistoryPropertySelector),
+  );
+  const { addNewDeck, updateCardLastReviewedAt, updateLastUsedCards } =
+    useLearningHistory(useShallow(learningHistoryActionSelector));
 
   const selectedDeck = useMemo(() => {
     if (isEmpty(historyDecks[deckName])) {
       return JapaneseDecks[deckName];
     }
     return historyDecks[deckName];
-  }, [deckName, historyDecks]);
+  }, [deckName]);
+
   const { flashcards } = selectedDeck;
   const [studyCardIndex, setStudyCardIndex] = useState(0);
   const wordNumberToUse = !isEmpty(customWordNumber)
     ? customWordNumber
     : wordNumber;
-  const studyCards = useMemo(
-    () => getStudyCards(flashcards, Number(wordNumberToUse), mode),
-    [flashcards, wordNumberToUse, mode],
-  );
+  const studyCards = useMemo(() => {
+    if (locationState?.shouldUseTheSameStudyCards) {
+      return lastUsedCards;
+    }
+
+    const studyCards = getStudyCards(flashcards, Number(wordNumberToUse), mode);
+    updateLastUsedCards(studyCards);
+    return studyCards;
+  }, [
+    flashcards,
+    wordNumberToUse,
+    mode,
+    locationState?.shouldUseTheSameStudyCards,
+    updateLastUsedCards,
+  ]);
 
   const isLastCard = studyCardIndex === studyCards.length - 1;
   const isFirstCard = studyCardIndex === 0;
@@ -42,7 +62,8 @@ const Deck: FC = () => {
 
   const goNext = () => {
     const cardId = studyCards[studyCardIndex].id;
-    updateLastReviewedAt(deckName, cardId);
+    updateCardLastReviewedAt(deckName, cardId);
+
     if (isLastCard) {
       navigate(Router.learningResultPage);
     } else {
@@ -63,8 +84,10 @@ const Deck: FC = () => {
   };
 
   useEffect(() => {
-    addNewDeck(selectedDeck);
-  }, [selectedDeck, addNewDeck]);
+    if (isEmpty(historyDecks[deckName])) {
+      addNewDeck(selectedDeck);
+    }
+  }, [historyDecks, deckName, selectedDeck]);
 
   if (mode !== Mode.TEST) {
     return (

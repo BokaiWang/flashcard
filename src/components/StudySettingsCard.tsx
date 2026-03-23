@@ -19,17 +19,21 @@ import { isNaN } from "lodash";
 import type { Mode } from "@/types";
 import useStudySettings from "@/store/studySettingsStore";
 import { isEmpty } from "@/helpers";
+import { useShallow } from "zustand/react/shallow";
+import {
+  studySettingsActionSelector,
+  studySettingsPropertySelector,
+} from "@/selector/studySettings.selectors";
 
 const StudySettingsCard = () => {
   const navigate = useNavigate();
-  const deckName = useStudySettings.use.deckName();
-  const wordNumber = useStudySettings.use.wordNumber();
-  const customWordNumber = useStudySettings.use.customWordNumber();
-  const mode = useStudySettings.use.mode();
-  const setDeckName = useStudySettings.use.setDeckName();
-  const setWordNumber = useStudySettings.use.setWordNumber();
-  const setCustomWordNumber = useStudySettings.use.setCustomWordNumber();
-  const setMode = useStudySettings.use.setMode();
+
+  const { deckName, wordNumber, customWordNumber, mode } = useStudySettings(
+    useShallow(studySettingsPropertySelector),
+  );
+
+  const { setDeckName, setWordNumber, setCustomWordNumber, setMode } =
+    useStudySettings(useShallow(studySettingsActionSelector));
 
   const shouldDisableGoButton =
     isEmpty(deckName) ||

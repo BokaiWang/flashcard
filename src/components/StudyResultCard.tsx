@@ -1,32 +1,77 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
-import { ChartContainer, type ChartConfig } from "./ui/chart";
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  type ChartConfig,
+} from "./ui/chart";
 import { Label, Pie, PieChart } from "recharts";
-import { JapaneseDecks } from "@/data/japaneseDecks";
 import { useNavigate } from "react-router";
 import useStudySettings from "@/store/studySettingsStore";
+import useLearningHistory from "@/store/learningHistoryStore";
+import { isEmpty } from "@/helpers";
+import { useShallow } from "zustand/react/shallow";
+import {
+  studySettingsActionSelector,
+  studySettingsPropertySelector,
+} from "@/selector/studySettings.selectors";
+import { learningHistoryPropertySelector } from "@/selector/learningHistory.selectors";
+import { Router } from "@/routes.constants";
 
 const chartConfig = {
   unlearned: { label: "Unlearned", color: "var(--accent)" },
-  studied: { label: "Studied", color: "#00a63e" },
+  learned: { label: "Learned", color: "#00a63e" },
 } satisfies ChartConfig;
 
 const StudyResultCard = () => {
-  const { deckName, resetStudySettings } = useStudySettings();
+  const { deckName } = useStudySettings(
+    useShallow(studySettingsPropertySelector),
+  );
+  const { resetStudySettings } = useStudySettings(
+    useShallow(studySettingsActionSelector),
+  );
+
+  const { decks: historyDecks } = useLearningHistory(
+    useShallow(learningHistoryPropertySelector),
+  );
+
   const navigate = useNavigate();
-  const selectedDeck = JapaneseDecks[deckName];
+  const selectedDeck = useMemo(() => {
+    return historyDecks[deckName];
+  }, [deckName]);
+
+  const studyResult = useMemo(
+    () =>
+      selectedDeck.flashcards.reduce(
+        (acc, curr) => {
+          return {
+            ...acc,
+            ...(isEmpty(curr.lastReviewedAt)
+              ? { unlearnedCounts: acc.unlearnedCounts + 1 }
+              : { learnedCounts: acc.learnedCounts + 1 }),
+          };
+        },
+        {
+          unlearnedCounts: 0,
+          learnedCounts: 0,
+        },
+      ),
+    [selectedDeck.flashcards],
+  );
+  const { unlearnedCounts, learnedCounts } = studyResult;
   const totalCounts = selectedDeck.flashcards.length;
-  const learnedCounts = readDeck.length;
-  const unlearnedCounts = totalCounts - learnedCounts;
+
   const chartData = [
-    { status: "studied", counts: learnedCounts, fill: "#00a63e" },
+    { status: "learned", counts: learnedCounts, fill: "#00a63e" },
     {
       status: "unlearned",
       counts: unlearnedCounts,
@@ -36,6 +81,16 @@ const StudyResultCard = () => {
 
   const studiedPercentage = ((learnedCounts / totalCounts) * 100).toFixed(1);
 
+  const onReview = () => {
+    navigate(Router.learningPage, {
+      state: { shouldUseTheSameStudyCards: true },
+    });
+  };
+
+  const onStartNewSession = () => {
+    navigate(Router.learningPage);
+  };
+
   const onFinish = () => {
     resetStudySettings();
     navigate("/");
@@ -44,12 +99,16 @@ const StudyResultCard = () => {
   return (
     <Card className="flex flex-col w-full h-full">
       <CardHeader>
-        <CardTitle>Congratulations!</CardTitle>
+        <CardTitle className="text-3xl text-center">Congratulations!</CardTitle>
+        <CardDescription>
+          You've completed this session! This is what you've learned so far in
+          this {deckName} deck.
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0 bg-des">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-62.5 pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+          className="mx-auto aspect-square max-h-96 pb-0 [&_.recharts-pie-label-text]:fill-foreground"
         >
           <PieChart>
             <Pie
@@ -57,7 +116,7 @@ const StudyResultCard = () => {
               dataKey="counts"
               nameKey="status"
               label
-              innerRadius={60}
+              innerRadius={70}
               strokeWidth={5}
             >
               <Label
@@ -82,7 +141,7 @@ const StudyResultCard = () => {
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Studied
+                          Learned
                         </tspan>
                       </text>
                     );
@@ -90,12 +149,18 @@ const StudyResultCard = () => {
                 }}
               />
             </Pie>
+            <ChartLegend
+              content={<ChartLegendContent nameKey="status" />}
+              className="-translate-y-2 flex-wrap gap-2 *:basis-1/4 *:justify-center"
+            />
           </PieChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex justify-around mt-10 text-sm">
-        <Button variant={"outline"}>Review</Button>
-        <Button>Start a new deck</Button>
+        <Button onClick={onReview} variant={"outline"}>
+          Review
+        </Button>
+        <Button onClick={onStartNewSession}>Start another session</Button>
         <Button onClick={onFinish}>Finish</Button>
       </CardFooter>
     </Card>

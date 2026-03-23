@@ -10,6 +10,8 @@ import type { FlashcardType } from "@/types";
 import PitchAccent from "./PitchAccent";
 import { Button } from "./ui/button";
 import useStudySettings from "@/store/studySettingsStore";
+import { useShallow } from "zustand/react/shallow";
+import { studySettingsPropertySelector } from "@/selector/studySettings.selectors";
 
 interface Props {
   flashcard: FlashcardType;
@@ -24,7 +26,10 @@ const StudyCard: FC<PropsWithChildren<Props>> = ({
   goNext,
   goPrevious,
 }) => {
-  const deckName = useStudySettings.use.deckName();
+  const { deckName } = useStudySettings(
+    useShallow(studySettingsPropertySelector),
+  );
+
   return (
     <Card className="flex flex-col w-full h-full">
       <CardHeader>

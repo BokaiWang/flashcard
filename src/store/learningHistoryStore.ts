@@ -1,15 +1,15 @@
-import type { DeckType, LearningState } from "@/types";
+import type { DeckType, FlashcardType, LearningState } from "@/types";
 import { create } from "zustand";
 import { cloneDeep, set as setLodash } from "lodash";
 import { isEmpty } from "@/helpers";
-import createSelectors from "./createSelectors";
 import { devtools } from "zustand/middleware";
 
-type LearningHistoryState = {
+export type LearningHistoryState = {
   decks: { [key: string]: DeckType };
+  lastUsedCards: FlashcardType[];
 };
 
-type LearningHistoryActions = {
+export type LearningHistoryActions = {
   addNewDeck: (newDeck: DeckType) => void;
   updateCardLearningState: (
     deckName: string,
@@ -17,18 +17,25 @@ type LearningHistoryActions = {
     learningState: LearningState,
   ) => void;
   updateCardLastReviewedAt: (deckName: string, cardId: string) => void;
+  updateLastUsedCards: (lastUsedCards: FlashcardType[]) => void;
 };
 
-const useLearningHistoryBase = create<
+const useLearningHistory = create<
   LearningHistoryState & LearningHistoryActions
 >()(
   devtools((set) => ({
     decks: {},
+    lastUsedCards: [],
     addNewDeck: (newDeck: DeckType) =>
       set(
-        (prevState) => ({
-          decks: { ...prevState.decks, [newDeck.id]: { ...newDeck } },
-        }),
+        (prevState) => {
+          if (isEmpty(prevState.decks[newDeck.id])) {
+            return {
+              decks: { ...prevState.decks, [newDeck.id]: { ...newDeck } },
+            };
+          }
+          return prevState;
+        },
         undefined,
         "addNewDeck",
       ),
@@ -83,9 +90,11 @@ const useLearningHistoryBase = create<
         true,
         "updateCardLastReviewedAt",
       ),
+    updateLastUsedCards: (cards: FlashcardType[]) =>
+      set(() => ({ lastUsedCards: cards }), false, "updateLastUsedCards"),
   })),
 );
 
-const useLearningHistory = createSelectors(useLearningHistoryBase);
+// const useLearningHistory = createSelectors(useLearningHistoryBase);
 
 export default useLearningHistory;
