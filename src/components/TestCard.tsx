@@ -1,6 +1,6 @@
 import React, { useState, type FC, type PropsWithChildren } from "react";
-import FlashcardFront from "./FlashcardFront";
-import FlashcardBack from "./FlashcardBack";
+import TestCardFront from "./TestCardFront";
+import TestCardBack from "./TestCardBack";
 import { cn } from "@/lib/utils";
 import type { LearningState, FlashcardType } from "@/types";
 
@@ -28,8 +28,8 @@ const Flashcard: FC<PropsWithChildren<Props>> = ({
       )}
       onClick={flipCard}
     >
-      <FlashcardFront flashcard={flashcard} />
-      <FlashcardBack
+      <TestCardFront flashcard={flashcard} />
+      <TestCardBack
         flashcard={flashcard}
         onAnswer={onAnswer}
         flipCard={flipCard}

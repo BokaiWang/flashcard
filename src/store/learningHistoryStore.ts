@@ -29,7 +29,7 @@ const useLearningHistory = create<
     addNewDeck: (newDeck: DeckType) =>
       set(
         (prevState) => {
-          if (isEmpty(prevState.decks[newDeck.id])) {
+          if (prevState.decks?.[newDeck.id] !== newDeck) {
             return {
               decks: { ...prevState.decks, [newDeck.id]: { ...newDeck } },
             };
@@ -60,11 +60,11 @@ const useLearningHistory = create<
               learningState,
             );
 
-            return { ...prevState, decks: { ...newDecks } };
+            return { decks: { ...newDecks } };
           }
           return prevState;
         },
-        true,
+        false,
         "updateCardLearningState",
       ),
 
@@ -83,11 +83,11 @@ const useLearningHistory = create<
               [deckId, "flashcards", indexToCard, "lastReviewedAt"],
               new Date(),
             );
-            return { ...prevState, decks: { ...newDecks } };
+            return { decks: { ...newDecks } };
           }
           return prevState;
         },
-        true,
+        false,
         "updateCardLastReviewedAt",
       ),
     updateLastUsedCards: (cards: FlashcardType[]) =>

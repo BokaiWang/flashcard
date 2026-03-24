@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, type FC } from "react";
-import Flashcard from "./Flashcard";
+import Flashcard from "./TestCard";
 import { type LearningState, Mode } from "@/types";
 import { useLocation, useNavigate } from "react-router";
 import StudyCard from "./StudyCard";

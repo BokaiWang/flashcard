@@ -1,6 +1,6 @@
 import React, { type FC, type PropsWithChildren } from "react";
 import type { LearningState, FlashcardType } from "@/types";
-import FlashcardControls from "./FlashcardControls";
+import TestCardControls from "./TestCardControls";
 import PitchAccent from "./PitchAccent";
 import {
   Card,
@@ -10,6 +10,8 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import useStudySettings from "@/store/studySettingsStore";
+import { useShallow } from "zustand/react/shallow";
+import { studySettingsPropertySelector } from "@/selector/studySettings.selectors";
 
 interface Props {
   flashcard: FlashcardType;
@@ -24,7 +26,9 @@ const FlashcardBack: FC<PropsWithChildren<Props>> = ({
   flipCard,
   isLastCard,
 }) => {
-  const deckName = useStudySettings.use.deckName();
+  const { deckName } = useStudySettings(
+    useShallow(studySettingsPropertySelector),
+  );
   return (
     <Card className="absolute backface-hidden rotate-y-180 w-full h-full">
       <CardHeader>
@@ -39,7 +43,7 @@ const FlashcardBack: FC<PropsWithChildren<Props>> = ({
         <p>{flashcard.example}</p>
       </CardContent>
       <CardFooter>
-        <FlashcardControls
+        <TestCardControls
           onAnswer={onAnswer}
           flipCard={flipCard}
           isLastCard={isLastCard}
