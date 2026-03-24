@@ -19,7 +19,11 @@ const InputComponent: FC<PropsWithChildren<Props>> = ({
   return (
     <div>
       <p className="m-1">{label}</p>
-      <Input placeholder={placeholder} onChange={onChange} />
+      <Input
+        className="h-14! text-2xl!"
+        placeholder={placeholder}
+        onChange={onChange}
+      />
     </div>
   );
 };

@@ -24,7 +24,7 @@ const SelectComponent: FC<PropsWithChildren<Props>> = ({
   return (
     <Select onValueChange={onSelect}>
       <p className="m-1">{label}</p>
-      <SelectTrigger className="w-full">
+      <SelectTrigger className="w-full h-14! text-2xl">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

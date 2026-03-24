@@ -69,13 +69,15 @@ const StudySettingsCard = () => {
           />
         </div>
         {wordNumber === "custom" && (
-          <InputComponent
-            onChange={(e) => {
-              setCustomWordNumber(Number(e.target.value));
-            }}
-            label={"Set a number"}
-            placeholder={"Set a number"}
-          />
+          <div>
+            <InputComponent
+              onChange={(e) => {
+                setCustomWordNumber(Number(e.target.value));
+              }}
+              label={"Set a number"}
+              placeholder={"Set a number"}
+            />
+          </div>
         )}
         <div>
           <SelectComponent

@@ -32,6 +32,10 @@ export const getStudyCards = (
     selected = [...shuffle(newCards).slice(0, count)];
   } else if (mode === Mode.REVIEW) {
     selected = [...shuffle(reviewCards).slice(0, count)];
+  } else if (mode === Mode.TEST) {
+    selected = isEmpty(reviewCards)
+      ? []
+      : [...shuffle(reviewCards).slice(0, count)];
   }
 
   return shuffle(selected);

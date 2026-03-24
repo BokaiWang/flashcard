@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import HomePage from "./pages/HomePage";
 import LearningPage from "./pages/LearningPage";
 import TestResultPage from "./pages/TestResultPage";
@@ -10,7 +10,19 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<HomePage />} />
+        <Route
+          index
+          element={
+            <Navigate
+              to={removeRoutePrefixForwardSlash(Router.homePage)}
+              replace
+            />
+          }
+        />
+        <Route
+          path={removeRoutePrefixForwardSlash(Router.homePage)}
+          element={<HomePage />}
+        />
         <Route
           path={removeRoutePrefixForwardSlash(Router.learningPage)}
           element={<LearningPage />}

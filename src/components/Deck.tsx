@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, type FC } from "react";
-import Flashcard from "./TestCard";
+import TestCard from "./TestCard";
 import { type LearningState, Mode } from "@/types";
 import { useLocation, useNavigate } from "react-router";
 import StudyCard from "./StudyCard";
@@ -15,6 +15,7 @@ import {
   learningHistoryActionSelector,
   learningHistoryPropertySelector,
 } from "@/selector/learningHistory.selectors";
+import NoTestCard from "./NoTestCard";
 
 const Deck: FC = () => {
   const { state: locationState } = useLocation();
@@ -25,8 +26,12 @@ const Deck: FC = () => {
   const { decks: historyDecks, lastUsedCards } = useLearningHistory(
     useShallow(learningHistoryPropertySelector),
   );
-  const { addNewDeck, updateCardLastReviewedAt, updateLastUsedCards } =
-    useLearningHistory(useShallow(learningHistoryActionSelector));
+  const {
+    addNewDeck,
+    updateCardLastReviewedAt,
+    updateLastUsedCards,
+    updateCardLearningState,
+  } = useLearningHistory(useShallow(learningHistoryActionSelector));
 
   const selectedDeck = useMemo(() => {
     if (isEmpty(historyDecks[deckName])) {
@@ -76,6 +81,8 @@ const Deck: FC = () => {
   };
 
   const onAnswer = (answer: LearningState) => {
+    const cardId = studyCards[studyCardIndex].id;
+    updateCardLearningState(deckName, cardId, answer);
     if (!isLastCard) {
       setStudyCardIndex(studyCardIndex + 1);
     } else {
@@ -99,13 +106,17 @@ const Deck: FC = () => {
       />
     );
   } else {
-    return (
-      <Flashcard
-        flashcard={studyCards[studyCardIndex]}
-        onAnswer={onAnswer}
-        isLastCard={isLastCard}
-      />
-    );
+    if (isEmpty(studyCards)) {
+      return <NoTestCard />;
+    } else {
+      return (
+        <TestCard
+          flashcard={studyCards[studyCardIndex]}
+          onAnswer={onAnswer}
+          isLastCard={isLastCard}
+        />
+      );
+    }
   }
 };
 
