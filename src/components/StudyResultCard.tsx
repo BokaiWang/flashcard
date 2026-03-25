@@ -65,7 +65,7 @@ const StudyResultCard = () => {
           learnedCounts: 0,
         },
       ),
-    [selectedDeck.flashcards],
+    [selectedDeck],
   );
   const { unlearnedCounts, learnedCounts } = studyResult;
   const totalCounts = selectedDeck.flashcards.length;

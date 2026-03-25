@@ -12,6 +12,7 @@ import { Button } from "./ui/button";
 import useStudySettings from "@/store/studySettingsStore";
 import { useShallow } from "zustand/react/shallow";
 import { studySettingsPropertySelector } from "@/selector/studySettings.selectors";
+import { Separator } from "./ui/separator";
 
 interface Props {
   flashcard: FlashcardType;
@@ -36,7 +37,7 @@ const StudyCard: FC<PropsWithChildren<Props>> = ({
         <CardTitle className="text-2xl m-auto">{deckName}</CardTitle>
       </CardHeader>
       <CardContent className="text-4xl flex flex-col justify-center items-center gap-5 h-full mb-20">
-        <div className="flex flex-col gap-3 justify-center items-center border-y w-full py-6">
+        <div className="flex flex-col gap-3 justify-center items-center w-full py-6">
           <div className="flex gap-3 justify-center items-center">
             <p>{flashcard.word}</p>
             <PitchAccent pitchAccent={flashcard.pitchAccent} />
@@ -44,12 +45,15 @@ const StudyCard: FC<PropsWithChildren<Props>> = ({
           <p className="text-2xl">{flashcard.pronunciation}</p>
           <p className="text-2xl ">{flashcard.wordType}</p>
         </div>
+        <Separator />
         <div>
           <p>{flashcard.meaning}</p>
         </div>
-        <div className="border-y w-full py-6 ">
+        <Separator />
+        <div className="w-full py-6 ">
           <p className="text-xl text-center">{flashcard.example}</p>
         </div>
+        <Separator />
       </CardContent>
       <CardFooter className="flex justify-around">
         <Button disabled={isFirstCard} variant={"outline"} onClick={goPrevious}>

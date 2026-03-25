@@ -111,6 +111,7 @@ const Deck: FC = () => {
     } else {
       return (
         <TestCard
+          cardIndex={studyCardIndex}
           flashcard={studyCards[studyCardIndex]}
           onAnswer={onAnswer}
           isLastCard={isLastCard}

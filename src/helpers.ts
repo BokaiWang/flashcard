@@ -15,13 +15,17 @@ const shuffle = <T>(array: T[]): T[] => {
   return result;
 };
 
+const getRandomItem = <T>(arr: T[]): T => {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
+
 export const getStudyCards = (
   cards: FlashcardType[],
   count: number,
   mode: Mode | "",
 ) => {
   const newCards = cards.filter((c) => isEmpty(c.lastReviewedAt));
-  const reviewCards = cards.filter((c) => !isEmpty(c.learningState));
+  const reviewCards = cards.filter((c) => !isEmpty(c.lastReviewedAt));
   let selected: FlashcardType[] = [];
   if (mode === Mode.MIXED) {
     selected = [
@@ -33,9 +37,25 @@ export const getStudyCards = (
   } else if (mode === Mode.REVIEW) {
     selected = [...shuffle(reviewCards).slice(0, count)];
   } else if (mode === Mode.TEST) {
-    selected = isEmpty(reviewCards)
+    const selectedCards = isEmpty(reviewCards)
       ? []
       : [...shuffle(reviewCards).slice(0, count)];
+    const answers = selectedCards.map((card) => card.word);
+    selected = selectedCards.map((card) => {
+      const choices = [
+        getRandomItem(answers),
+        getRandomItem(answers),
+        getRandomItem(answers),
+        getRandomItem(answers),
+      ];
+      const correctAnswerIndex = choices.findIndex(
+        (choice) => choice === card.word,
+      );
+      if (correctAnswerIndex < 0) {
+        choices[3] = card.word;
+      }
+      return { ...card, choices: shuffle(choices) };
+    });
   }
 
   return shuffle(selected);

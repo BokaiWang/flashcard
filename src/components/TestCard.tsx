@@ -5,12 +5,14 @@ import { cn } from "@/lib/utils";
 import type { LearningState, FlashcardType } from "@/types";
 
 interface Props {
+  cardIndex: number;
   flashcard: FlashcardType;
   onAnswer: (answer: LearningState) => void;
   isLastCard: boolean;
 }
 
 const Flashcard: FC<PropsWithChildren<Props>> = ({
+  cardIndex,
   flashcard,
   onAnswer,
   isLastCard,
@@ -28,7 +30,7 @@ const Flashcard: FC<PropsWithChildren<Props>> = ({
       )}
       onClick={flipCard}
     >
-      <TestCardFront flashcard={flashcard} />
+      <TestCardFront cardIndex={cardIndex} flashcard={flashcard} />
       <TestCardBack
         flashcard={flashcard}
         onAnswer={onAnswer}

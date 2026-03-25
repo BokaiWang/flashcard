@@ -35,12 +35,20 @@ const FlashcardBack: FC<PropsWithChildren<Props>> = ({
         <CardTitle className="text-2xl m-auto">{deckName}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col justify-center items-center gap-5 h-full text-2xl">
-        <div className="flex gap-3 justify-center items-center">
-          <p>{flashcard.pronunciation}</p>
-          <PitchAccent pitchAccent={flashcard.pitchAccent} />
+        <div className="flex flex-col gap-3 justify-center items-center border-y w-full py-6">
+          <div className="flex gap-3 justify-center items-center">
+            <p>{flashcard.word}</p>
+            <PitchAccent pitchAccent={flashcard.pitchAccent} />
+          </div>
+          <p className="text-2xl">{flashcard.pronunciation}</p>
+          <p className="text-2xl ">{flashcard.wordType}</p>
         </div>
-        <p>{flashcard.meaning}</p>
-        <p>{flashcard.example}</p>
+        <div>
+          <p>{flashcard.meaning}</p>
+        </div>
+        <div className="border-y w-full py-6 ">
+          <p className="text-xl text-center">{flashcard.example}</p>
+        </div>
       </CardContent>
       <CardFooter>
         <TestCardControls

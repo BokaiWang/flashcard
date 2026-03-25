@@ -25,6 +25,7 @@ export type FlashcardType = {
   example?: string;
   learningState: LearningState | null;
   cloze: string;
+  choices?: string[];
 
   // spaced repetition (future)
   lastReviewedAt?: Date;
