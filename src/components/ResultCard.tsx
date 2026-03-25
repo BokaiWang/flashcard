@@ -1,4 +1,4 @@
-import React, { useCallback, type FC, type PropsWithChildren } from "react";
+import React, { type FC } from "react";
 import {
   Card,
   CardContent,
@@ -6,90 +6,68 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { LearningState, type FlashcardType } from "@/types";
-import { PieChart, Pie } from "recharts";
+import { PieChart, Pie, Label } from "recharts";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
 } from "./ui/chart";
-import { cloneDeep } from "lodash";
 import ResultCardControls from "./ResultCardControls";
-
-interface Props {
-  readDeck: FlashcardType[];
-}
+import useTestSession from "@/store/testSession";
+import { useShallow } from "zustand/react/shallow";
+import { testSessionPropertySelector } from "@/selector/testSession.selectors";
+import useLearningHistory from "@/store/learningHistoryStore";
+import { learningHistoryPropertySelector } from "@/selector/learningHistory.selectors";
 
 const chartConfig = {
-  [LearningState.NEW]: { label: "New", color: "var(--destructive)" },
-  [LearningState.NOT_FAMILIAR]: {
-    label: "Not Familiar",
-    color: "var(--accent)",
+  correct: { label: "Correct", color: "#00a63e" },
+  wrong: {
+    label: "Wrong",
+    color: "var(--destructive)",
   },
-  [LearningState.MASTERED]: { label: "Mastered", color: "#00a63e" },
 } satisfies ChartConfig;
 
-const ResultCard: FC<PropsWithChildren<Props>> = ({ readDeck }) => {
-  const calculateCounts = useCallback(
-    (
-      acc: { learningState: LearningState; counts: number; fill: string }[],
-      learning: LearningState,
-    ) => {
-      const cloned = cloneDeep(acc);
-      const index = cloned.findIndex(
-        ({ learningState }) => learningState === learning,
-      );
-      cloned[index] = {
-        ...cloned[index],
-        counts: cloned[index].counts + 1,
-      };
-      return cloned;
-    },
-    [],
+const ResultCard: FC = () => {
+  const { correctAnswers, choices } = useTestSession(
+    useShallow(testSessionPropertySelector),
   );
-  const chartData = readDeck.reduce(
-    (acc, curr) => {
-      switch (curr.learningState) {
-        case LearningState.NEW: {
-          const newStatus = calculateCounts(acc, LearningState.NEW);
-          return [...newStatus];
-        }
-        case LearningState.NOT_FAMILIAR: {
-          const newStatus = calculateCounts(acc, LearningState.NOT_FAMILIAR);
-          return [...newStatus];
-        }
-        case LearningState.MASTERED: {
-          const newStatus = calculateCounts(acc, LearningState.MASTERED);
-          return [...newStatus];
-        }
-        default:
-          return acc;
-      }
+  const { lastUsedCards } = useLearningHistory(
+    useShallow(learningHistoryPropertySelector),
+  );
+  const { correct, wrong } = correctAnswers.reduce(
+    (result, answer, index) => {
+      return {
+        ...result,
+        ...(answer === choices[index]
+          ? { correct: result.correct++ }
+          : { wrong: result.wrong++ }),
+      };
     },
-    [
-      {
-        learningState: LearningState.NEW,
-        counts: 0,
-        fill: "var(--destructive)",
-      },
-      {
-        learningState: LearningState.NOT_FAMILIAR,
-        counts: 0,
-        fill: "var(--accent)",
-      },
-      {
-        learningState: LearningState.MASTERED,
-        counts: 0,
-        fill: "#00a63e",
-      },
-    ],
+    { correct: 0, wrong: 0 },
+  );
+
+  const chartData = [
+    {
+      result: "correct",
+      counts: correct,
+      fill: "#00a63e",
+    },
+    {
+      result: "wrong",
+      counts: wrong,
+      fill: "var(--destructive)",
+    },
+  ];
+
+  const correctPercentage = ((correct / correctAnswers.length) * 100).toFixed(
+    1,
   );
 
   return (
     <Card className="flex flex-col w-full h-full">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Learning Status</CardTitle>
+        <CardTitle>Test Result</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0 bg-des">
         <ChartContainer
@@ -102,10 +80,45 @@ const ResultCard: FC<PropsWithChildren<Props>> = ({ readDeck }) => {
               data={chartData}
               dataKey="counts"
               label
-              nameKey="learningState"
-            />
+              nameKey="result"
+              innerRadius={50}
+              strokeWidth={3}
+            >
+              <Label
+                content={({ viewBox }) => {
+                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                    return (
+                      <text
+                        x={viewBox.cx}
+                        y={viewBox.cy}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                      >
+                        <tspan
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          className="fill-foreground text-3xl font-bold"
+                        >
+                          {correctPercentage}%
+                        </tspan>
+                        <tspan
+                          x={viewBox.cx}
+                          y={(viewBox.cy || 0) + 24}
+                          className="fill-muted-foreground"
+                        >
+                          Correct
+                        </tspan>
+                      </text>
+                    );
+                  }
+                }}
+              />
+            </Pie>
           </PieChart>
         </ChartContainer>
+        {lastUsedCards.map((card) => (
+          <p>{card.example}</p>
+        ))}
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <ResultCardControls />

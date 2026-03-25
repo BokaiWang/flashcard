@@ -16,6 +16,8 @@ import {
   learningHistoryPropertySelector,
 } from "@/selector/learningHistory.selectors";
 import NoTestCard from "./NoTestCard";
+import useTestSession from "@/store/testSession";
+import { testSessionActionSelector } from "@/selector/testSession.selectors";
 
 const Deck: FC = () => {
   const { state: locationState } = useLocation();
@@ -32,6 +34,10 @@ const Deck: FC = () => {
     updateLastUsedCards,
     updateCardLearningState,
   } = useLearningHistory(useShallow(learningHistoryActionSelector));
+
+  const { updateCorrectAnswers } = useTestSession(
+    useShallow(testSessionActionSelector),
+  );
 
   const selectedDeck = useMemo(() => {
     if (isEmpty(historyDecks[deckName])) {
@@ -52,6 +58,9 @@ const Deck: FC = () => {
 
     const studyCards = getStudyCards(flashcards, Number(wordNumberToUse), mode);
     updateLastUsedCards(studyCards);
+    if (mode === Mode.TEST) {
+      updateCorrectAnswers(studyCards.map((card) => card.word));
+    }
     return studyCards;
   }, [
     flashcards,
@@ -59,6 +68,7 @@ const Deck: FC = () => {
     mode,
     locationState?.shouldUseTheSameStudyCards,
     updateLastUsedCards,
+    updateCorrectAnswers,
   ]);
 
   const isLastCard = studyCardIndex === studyCards.length - 1;
@@ -80,7 +90,7 @@ const Deck: FC = () => {
     setStudyCardIndex(studyCardIndex - 1);
   };
 
-  const onAnswer = (answer: LearningState) => {
+  const onAnswerLearningState = (answer: LearningState) => {
     const cardId = studyCards[studyCardIndex].id;
     updateCardLearningState(deckName, cardId, answer);
     if (!isLastCard) {
@@ -113,7 +123,7 @@ const Deck: FC = () => {
         <TestCard
           cardIndex={studyCardIndex}
           flashcard={studyCards[studyCardIndex]}
-          onAnswer={onAnswer}
+          onAnswerLearningState={onAnswerLearningState}
           isLastCard={isLastCard}
         />
       );

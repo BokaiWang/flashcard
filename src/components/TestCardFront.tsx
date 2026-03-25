@@ -6,18 +6,31 @@ import { useShallow } from "zustand/react/shallow";
 import { studySettingsPropertySelector } from "@/selector/studySettings.selectors";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
+import useTestSession from "@/store/testSession";
+import { testSessionActionSelector } from "@/selector/testSession.selectors";
 interface Props {
   cardIndex: number;
   flashcard: FlashcardType;
+  flipCard: () => void;
 }
 
 const FlashcardFront: FC<PropsWithChildren<Props>> = ({
   cardIndex,
   flashcard,
+  flipCard,
 }) => {
   const { deckName } = useStudySettings(
     useShallow(studySettingsPropertySelector),
   );
+  const { updateChoices } = useTestSession(
+    useShallow(testSessionActionSelector),
+  );
+
+  const onAnswer = (choice: string) => {
+    flipCard();
+    updateChoices(choice);
+  };
+  console.log("flashcard choices", flashcard.choices);
   return (
     <Card className="absolute backface-hidden w-full h-full">
       <CardHeader>
@@ -31,7 +44,11 @@ const FlashcardFront: FC<PropsWithChildren<Props>> = ({
           <Separator />
           <div className="flex flex-col gap-3 ">
             {flashcard.choices?.map((choice, index) => (
-              <Button key={choice} className="w-40 h-10 text-xl justify-start!">
+              <Button
+                key={choice}
+                onClick={() => onAnswer(choice)}
+                className="w-40 h-10 text-xl justify-start!"
+              >
                 {index + 1} - {choice}
               </Button>
             ))}

@@ -15,14 +15,14 @@ import { studySettingsPropertySelector } from "@/selector/studySettings.selector
 
 interface Props {
   flashcard: FlashcardType;
-  onAnswer: (answer: LearningState) => void;
+  onAnswerLearningState: (answer: LearningState) => void;
   flipCard: () => void;
   isLastCard: boolean;
 }
 
 const FlashcardBack: FC<PropsWithChildren<Props>> = ({
   flashcard,
-  onAnswer,
+  onAnswerLearningState,
   flipCard,
   isLastCard,
 }) => {
@@ -52,7 +52,7 @@ const FlashcardBack: FC<PropsWithChildren<Props>> = ({
       </CardContent>
       <CardFooter>
         <TestCardControls
-          onAnswer={onAnswer}
+          onAnswerLearningState={onAnswerLearningState}
           flipCard={flipCard}
           isLastCard={isLastCard}
         />

@@ -19,6 +19,18 @@ const getRandomItem = <T>(arr: T[]): T => {
   return arr[Math.floor(Math.random() * arr.length)];
 };
 
+const getChoices = <T>(arr: T[], length: number): T[] => {
+  const newArray: T[] = [];
+  while (newArray.length < length) {
+    const item = getRandomItem(arr);
+    if (!newArray.includes(item)) {
+      newArray.push(item);
+    }
+  }
+
+  return newArray;
+};
+
 export const getStudyCards = (
   cards: FlashcardType[],
   count: number,
@@ -42,12 +54,7 @@ export const getStudyCards = (
       : [...shuffle(reviewCards).slice(0, count)];
     const answers = selectedCards.map((card) => card.word);
     selected = selectedCards.map((card) => {
-      const choices = [
-        getRandomItem(answers),
-        getRandomItem(answers),
-        getRandomItem(answers),
-        getRandomItem(answers),
-      ];
+      const choices = getChoices(answers, 4);
       const correctAnswerIndex = choices.findIndex(
         (choice) => choice === card.word,
       );

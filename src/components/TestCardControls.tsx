@@ -3,13 +3,13 @@ import { Button } from "./ui/button";
 import { LearningState } from "@/types";
 
 interface Props {
-  onAnswer: (answer: LearningState) => void;
+  onAnswerLearningState: (answer: LearningState) => void;
   flipCard: () => void;
   isLastCard: boolean;
 }
 
 const FlashcardControls: FC<PropsWithChildren<Props>> = ({
-  onAnswer,
+  onAnswerLearningState,
   flipCard,
   isLastCard,
 }) => {
@@ -18,7 +18,7 @@ const FlashcardControls: FC<PropsWithChildren<Props>> = ({
       <Button
         onClick={(e) => {
           e.stopPropagation();
-          onAnswer(LearningState.NEW);
+          onAnswerLearningState(LearningState.NEW);
           if (!isLastCard) {
             flipCard();
           }
@@ -30,7 +30,7 @@ const FlashcardControls: FC<PropsWithChildren<Props>> = ({
       <Button
         onClick={(e) => {
           e.stopPropagation();
-          onAnswer(LearningState.NOT_FAMILIAR);
+          onAnswerLearningState(LearningState.NOT_FAMILIAR);
           if (!isLastCard) {
             flipCard();
           }
@@ -42,7 +42,7 @@ const FlashcardControls: FC<PropsWithChildren<Props>> = ({
       <Button
         onClick={(e) => {
           e.stopPropagation();
-          onAnswer(LearningState.MASTERED);
+          onAnswerLearningState(LearningState.MASTERED);
           if (!isLastCard) {
             flipCard();
           }

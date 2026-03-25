@@ -51,7 +51,7 @@ const StudyResultCard = () => {
 
   const studyResult = useMemo(
     () =>
-      selectedDeck.flashcards.reduce(
+      selectedDeck?.flashcards.reduce(
         (acc, curr) => {
           return {
             ...acc,
@@ -64,11 +64,11 @@ const StudyResultCard = () => {
           unlearnedCounts: 0,
           learnedCounts: 0,
         },
-      ),
+      ) ?? {},
     [selectedDeck],
   );
   const { unlearnedCounts, learnedCounts } = studyResult;
-  const totalCounts = selectedDeck.flashcards.length;
+  const totalCounts = selectedDeck?.flashcards.length ?? 0;
 
   const chartData = [
     { status: "learned", counts: learnedCounts, fill: "#00a63e" },

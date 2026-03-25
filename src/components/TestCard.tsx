@@ -7,14 +7,14 @@ import type { LearningState, FlashcardType } from "@/types";
 interface Props {
   cardIndex: number;
   flashcard: FlashcardType;
-  onAnswer: (answer: LearningState) => void;
+  onAnswerLearningState: (answer: LearningState) => void;
   isLastCard: boolean;
 }
 
 const Flashcard: FC<PropsWithChildren<Props>> = ({
   cardIndex,
   flashcard,
-  onAnswer,
+  onAnswerLearningState,
   isLastCard,
 }) => {
   const [flipped, setFlipped] = useState(false);
@@ -28,12 +28,15 @@ const Flashcard: FC<PropsWithChildren<Props>> = ({
         "perspective-distant flex flex-col justify-center items-center w-full h-full bg-accent text-accent-foreground rounded-xl transition-transform duration-500 transform-3d",
         flipped && "rotate-y-180",
       )}
-      onClick={flipCard}
     >
-      <TestCardFront cardIndex={cardIndex} flashcard={flashcard} />
+      <TestCardFront
+        flipCard={flipCard}
+        cardIndex={cardIndex}
+        flashcard={flashcard}
+      />
       <TestCardBack
         flashcard={flashcard}
-        onAnswer={onAnswer}
+        onAnswerLearningState={onAnswerLearningState}
         flipCard={flipCard}
         isLastCard={isLastCard}
       />
