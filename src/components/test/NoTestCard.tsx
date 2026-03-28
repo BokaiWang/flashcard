@@ -5,8 +5,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import { Button } from "./ui/button";
+} from "../ui/card";
+import { Button } from "../ui/button";
 import { Router } from "@/routes.constants";
 import { useNavigate } from "react-router";
 import useStudySettings from "@/store/studySettingsStore";

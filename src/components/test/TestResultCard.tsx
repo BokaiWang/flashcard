@@ -1,37 +1,35 @@
 import React, { type FC } from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart, Pie, Label } from "recharts";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "./ui/chart";
-import ResultCardControls from "./ResultCardControls";
+} from "../ui/chart";
+import TestResultCardControls from "./TestResultCardControls";
 import useTestSession from "@/store/testSession";
 import { useShallow } from "zustand/react/shallow";
 import { testSessionPropertySelector } from "@/selector/testSession.selectors";
 import useLearningHistory from "@/store/learningHistoryStore";
 import { learningHistoryPropertySelector } from "@/selector/learningHistory.selectors";
+import { TableCell, TableRow } from "@/components/ui/table";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 const chartConfig = {
-  correct: { label: "Correct", color: "#00a63e" },
+  correct: { label: "Correct", color: "var(--color-green-600)" },
   wrong: {
     label: "Wrong",
     color: "var(--destructive)",
   },
 } satisfies ChartConfig;
 
-const ResultCard: FC = () => {
+const TestResultCard: FC = () => {
   const { correctAnswers, choices } = useTestSession(
     useShallow(testSessionPropertySelector),
   );
+
   const { lastUsedCards } = useLearningHistory(
     useShallow(learningHistoryPropertySelector),
   );
@@ -40,8 +38,8 @@ const ResultCard: FC = () => {
       return {
         ...result,
         ...(answer === choices[index]
-          ? { correct: result.correct++ }
-          : { wrong: result.wrong++ }),
+          ? { correct: ++result.correct }
+          : { wrong: ++result.wrong }),
       };
     },
     { correct: 0, wrong: 0 },
@@ -51,7 +49,7 @@ const ResultCard: FC = () => {
     {
       result: "correct",
       counts: correct,
-      fill: "#00a63e",
+      fill: "var(--color-green-600)",
     },
     {
       result: "wrong",
@@ -72,7 +70,7 @@ const ResultCard: FC = () => {
       <CardContent className="flex-1 pb-0 bg-des">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-62.5 pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+          className="mx-auto aspect-square max-h-60 pb-0 [&_.recharts-pie-label-text]:fill-foreground"
         >
           <PieChart>
             <ChartTooltip content={<ChartTooltipContent hideLabel />} />
@@ -81,8 +79,8 @@ const ResultCard: FC = () => {
               dataKey="counts"
               label
               nameKey="result"
-              innerRadius={50}
-              strokeWidth={3}
+              innerRadius={70}
+              strokeWidth={5}
             >
               <Label
                 content={({ viewBox }) => {
@@ -116,15 +114,32 @@ const ResultCard: FC = () => {
             </Pie>
           </PieChart>
         </ChartContainer>
-        {lastUsedCards.map((card) => (
-          <p>{card.example}</p>
-        ))}
+        <div className="h-2/5 py-5">
+          <ScrollArea className="h-full">
+            {lastUsedCards.map((card, index) => (
+              <TableRow key={card.id}>
+                <TableCell className="font-medium">{index + 1}</TableCell>
+                <TableCell
+                  className={cn(
+                    choices[index] === card.word
+                      ? "text-green-600"
+                      : "text-destructive",
+                  )}
+                >
+                  {choices[index]}
+                </TableCell>
+                <TableCell>{card.example}</TableCell>
+              </TableRow>
+            ))}
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+          <div className="mt-5">
+            <TestResultCardControls />
+          </div>
+        </div>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <ResultCardControls />
-      </CardFooter>
     </Card>
   );
 };
 
-export default ResultCard;
+export default TestResultCard;

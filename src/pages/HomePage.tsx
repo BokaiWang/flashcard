@@ -1,6 +1,6 @@
 import React from "react";
-import PageContainer from "@/components/PageContainer";
-import StudySettingsCard from "@/components/StudySettingsCard";
+import PageContainer from "@/components/common/PageContainer";
+import StudySettingsCard from "@/components/study/StudySettingsCard";
 
 const HomePage = () => {
   return (

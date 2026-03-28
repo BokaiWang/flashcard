@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useStudySettings from "@/store/studySettingsStore";
 import { useShallow } from "zustand/react/shallow";
 import { studySettingsPropertySelector } from "@/selector/studySettings.selectors";
-import { Button } from "./ui/button";
-import { Separator } from "./ui/separator";
+import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
 import useTestSession from "@/store/testSession";
 import { testSessionActionSelector } from "@/selector/testSession.selectors";
 interface Props {
@@ -30,7 +30,7 @@ const FlashcardFront: FC<PropsWithChildren<Props>> = ({
     flipCard();
     updateChoices(choice);
   };
-  console.log("flashcard choices", flashcard.choices);
+
   return (
     <Card className="absolute backface-hidden w-full h-full">
       <CardHeader>

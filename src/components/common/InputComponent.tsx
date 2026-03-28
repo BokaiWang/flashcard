@@ -3,7 +3,7 @@ import React, {
   type FC,
   type PropsWithChildren,
 } from "react";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 
 interface Props {
   onChange: (e: ChangeEvent<HTMLInputElement, HTMLInputElement>) => void;

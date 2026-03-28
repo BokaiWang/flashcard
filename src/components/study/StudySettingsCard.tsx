@@ -4,16 +4,16 @@ import {
   WordNumberOptions,
   ModeOptions,
 } from "@/data/japaneseDecks";
-import InputComponent from "./InputComponent";
-import SelectComponent from "./SelectComponent";
-import { Button } from "./ui/button";
+import InputComponent from "../common/InputComponent";
+
+import { Button } from "../ui/button";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
   CardFooter,
-} from "./ui/card";
+} from "../ui/card";
 import { useNavigate } from "react-router";
 import { isNaN } from "lodash";
 import type { Mode } from "@/types";
@@ -24,6 +24,7 @@ import {
   studySettingsActionSelector,
   studySettingsPropertySelector,
 } from "@/selector/studySettings.selectors";
+import SelectComponent from "../common/SelectComponent";
 
 const StudySettingsCard = () => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const StudySettingsCard = () => {
       <CardContent className="flex flex-col gap-3 mt-10">
         <div>
           <SelectComponent
-            onSelect={(value) => setDeckName(value)}
+            onSelect={(value: string) => setDeckName(value)}
             options={JapaneseDeckOptions}
             placeholder={"Select a deck"}
             label={"Select a deck"}
@@ -57,7 +58,7 @@ const StudySettingsCard = () => {
         </div>
         <div>
           <SelectComponent
-            onSelect={(value) => {
+            onSelect={(value: string) => {
               const convertedValue = Number(value);
               setWordNumber(
                 isNaN(convertedValue) ? (value as "custom") : convertedValue,
@@ -81,7 +82,7 @@ const StudySettingsCard = () => {
         )}
         <div>
           <SelectComponent
-            onSelect={(value) => setMode(value as Mode)}
+            onSelect={(value: string) => setMode(value as Mode)}
             options={ModeOptions}
             placeholder={"Select a mode"}
             label={"Mode"}

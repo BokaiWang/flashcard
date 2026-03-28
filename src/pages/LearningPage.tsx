@@ -1,6 +1,6 @@
 import React from "react";
-import PageContainer from "@/components/PageContainer";
-import Deck from "@/components/Deck";
+import PageContainer from "@/components/common/PageContainer";
+import Deck from "@/components/common/Deck";
 
 const LearningPage = () => {
   return (

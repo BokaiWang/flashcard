@@ -5,7 +5,7 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-} from "./ui/select";
+} from "../ui/select";
 import type { Option } from "@/types";
 
 interface Props {

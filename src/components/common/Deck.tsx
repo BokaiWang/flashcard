@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState, type FC } from "react";
-import TestCard from "./TestCard";
+import TestCard from "../test/TestCard";
 import { type LearningState, Mode } from "@/types";
 import { useLocation, useNavigate } from "react-router";
-import StudyCard from "./StudyCard";
+import StudyCard from "../study/StudyCard";
 import { Router } from "@/routes.constants";
 import { isEmpty } from "lodash";
 import { getStudyCards } from "@/helpers";
@@ -15,7 +15,7 @@ import {
   learningHistoryActionSelector,
   learningHistoryPropertySelector,
 } from "@/selector/learningHistory.selectors";
-import NoTestCard from "./NoTestCard";
+import NoTestCard from "../test/NoTestCard";
 import useTestSession from "@/store/testSession";
 import { testSessionActionSelector } from "@/selector/testSession.selectors";
 

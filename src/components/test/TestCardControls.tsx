@@ -1,5 +1,5 @@
 import React, { type FC, type PropsWithChildren } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { LearningState } from "@/types";
 
 interface Props {

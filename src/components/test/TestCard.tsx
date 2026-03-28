@@ -34,12 +34,14 @@ const Flashcard: FC<PropsWithChildren<Props>> = ({
         cardIndex={cardIndex}
         flashcard={flashcard}
       />
-      <TestCardBack
-        flashcard={flashcard}
-        onAnswerLearningState={onAnswerLearningState}
-        flipCard={flipCard}
-        isLastCard={isLastCard}
-      />
+      {flipped && (
+        <TestCardBack
+          flashcard={flashcard}
+          onAnswerLearningState={onAnswerLearningState}
+          flipCard={flipCard}
+          isLastCard={isLastCard}
+        />
+      )}
     </div>
   );
 };

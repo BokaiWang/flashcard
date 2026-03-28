@@ -6,14 +6,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import { Button } from "./ui/button";
+} from "../ui/card";
+import { Button } from "../ui/button";
 import {
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
   type ChartConfig,
-} from "./ui/chart";
+} from "../ui/chart";
 import { Label, Pie, PieChart } from "recharts";
 import { useNavigate } from "react-router";
 import useStudySettings from "@/store/studySettingsStore";
@@ -29,7 +29,7 @@ import { Router } from "@/routes.constants";
 
 const chartConfig = {
   unlearned: { label: "Unlearned", color: "var(--accent)" },
-  learned: { label: "Learned", color: "#00a63e" },
+  learned: { label: "Learned", color: "var(--color-green-600)" },
 } satisfies ChartConfig;
 
 const StudyResultCard = () => {
@@ -71,7 +71,11 @@ const StudyResultCard = () => {
   const totalCounts = selectedDeck?.flashcards.length ?? 0;
 
   const chartData = [
-    { status: "learned", counts: learnedCounts, fill: "#00a63e" },
+    {
+      status: "learned",
+      counts: learnedCounts,
+      fill: "var(--color-green-600)",
+    },
     {
       status: "unlearned",
       counts: unlearnedCounts,

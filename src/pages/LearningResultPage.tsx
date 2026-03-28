@@ -1,6 +1,6 @@
 import React from "react";
-import PageContainer from "@/components/PageContainer";
-import StudyResultCard from "@/components/StudyResultCard";
+import PageContainer from "@/components/common/PageContainer";
+import StudyResultCard from "@/components/study/StudyResultCard";
 
 const LearningResultPage = () => {
   return (

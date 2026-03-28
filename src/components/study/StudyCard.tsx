@@ -1,41 +1,43 @@
 import React, { type FC, type PropsWithChildren } from "react";
-import type { LearningState, FlashcardType } from "@/types";
-import TestCardControls from "./TestCardControls";
-import PitchAccent from "./PitchAccent";
 import {
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
+} from "../ui/card";
+import type { FlashcardType } from "@/types";
+import PitchAccent from "../common/PitchAccent";
+import { Button } from "../ui/button";
 import useStudySettings from "@/store/studySettingsStore";
 import { useShallow } from "zustand/react/shallow";
 import { studySettingsPropertySelector } from "@/selector/studySettings.selectors";
+import { Separator } from "../ui/separator";
 
 interface Props {
   flashcard: FlashcardType;
-  onAnswerLearningState: (answer: LearningState) => void;
-  flipCard: () => void;
-  isLastCard: boolean;
+  isFirstCard: boolean;
+  goNext: () => void;
+  goPrevious: () => void;
 }
 
-const FlashcardBack: FC<PropsWithChildren<Props>> = ({
+const StudyCard: FC<PropsWithChildren<Props>> = ({
   flashcard,
-  onAnswerLearningState,
-  flipCard,
-  isLastCard,
+  isFirstCard,
+  goNext,
+  goPrevious,
 }) => {
   const { deckName } = useStudySettings(
     useShallow(studySettingsPropertySelector),
   );
+
   return (
-    <Card className="absolute backface-hidden rotate-y-180 w-full h-full">
+    <Card className="flex flex-col w-full h-full">
       <CardHeader>
         <CardTitle className="text-2xl m-auto">{deckName}</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col justify-center items-center gap-5 h-full text-2xl">
-        <div className="flex flex-col gap-3 justify-center items-center border-y w-full py-6">
+      <CardContent className="text-4xl flex flex-col justify-center items-center gap-5 h-full mb-20">
+        <div className="flex flex-col gap-3 justify-center items-center w-full py-6">
           <div className="flex gap-3 justify-center items-center">
             <p>{flashcard.word}</p>
             <PitchAccent pitchAccent={flashcard.pitchAccent} />
@@ -43,22 +45,24 @@ const FlashcardBack: FC<PropsWithChildren<Props>> = ({
           <p className="text-2xl">{flashcard.pronunciation}</p>
           <p className="text-2xl ">{flashcard.wordType}</p>
         </div>
+        <Separator />
         <div>
           <p>{flashcard.meaning}</p>
         </div>
-        <div className="border-y w-full py-6 ">
+        <Separator />
+        <div className="w-full py-6 ">
           <p className="text-xl text-center">{flashcard.example}</p>
         </div>
+        <Separator />
       </CardContent>
-      <CardFooter>
-        <TestCardControls
-          onAnswerLearningState={onAnswerLearningState}
-          flipCard={flipCard}
-          isLastCard={isLastCard}
-        />
+      <CardFooter className="flex justify-around">
+        <Button disabled={isFirstCard} variant={"outline"} onClick={goPrevious}>
+          Previous
+        </Button>
+        <Button onClick={goNext}>Next</Button>
       </CardFooter>
     </Card>
   );
 };
 
-export default FlashcardBack;
+export default StudyCard;
