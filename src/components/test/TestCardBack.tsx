@@ -30,7 +30,7 @@ const FlashcardBack: FC<PropsWithChildren<Props>> = ({
     useShallow(studySettingsPropertySelector),
   );
   return (
-    <Card className="absolute backface-hidden rotate-y-180 w-full h-full">
+    <Card className="bg-amber-100 dark:bg-slate-950 absolute backface-hidden rotate-y-180 w-full h-full">
       <CardHeader>
         <CardTitle className="text-2xl m-auto">{deckName}</CardTitle>
       </CardHeader>

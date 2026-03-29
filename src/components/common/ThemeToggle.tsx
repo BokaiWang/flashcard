@@ -26,7 +26,7 @@ const ThemeToggle = () => {
   return (
     <div
       onClick={onToggleTheme}
-      className="flex justify-center items-center bg-amber-20 rounded-sm w-8 h-8 dark:bg-accent cursor-pointer"
+      className="flex justify-center items-center bg-amber-50 hover:bg-amber-200 rounded-sm w-8 h-8 dark:bg-slate-800 dark:hover:bg-slate-700 cursor-pointer"
     >
       {theme === "DARK" ? <Moon /> : <Sun />}
     </div>

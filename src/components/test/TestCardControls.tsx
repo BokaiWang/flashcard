@@ -14,7 +14,7 @@ const FlashcardControls: FC<PropsWithChildren<Props>> = ({
   isLastCard,
 }) => {
   return (
-    <div className="flex justify-between w-full">
+    <div className="bg-amber-100 dark:bg-slate-950 flex justify-between w-full">
       <Button
         onClick={(e) => {
           e.stopPropagation();

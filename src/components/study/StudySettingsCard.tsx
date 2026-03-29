@@ -43,7 +43,7 @@ const StudySettingsCard = () => {
 
   const onStart = () => navigate("/learning");
   return (
-    <Card className="flex flex-col w-full h-full">
+    <Card className="bg-amber-100 dark:bg-slate-950 flex flex-col w-full h-full">
       <CardHeader>
         <CardTitle>What do you want to study?</CardTitle>
       </CardHeader>

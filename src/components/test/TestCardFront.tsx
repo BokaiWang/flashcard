@@ -32,7 +32,7 @@ const FlashcardFront: FC<PropsWithChildren<Props>> = ({
   };
 
   return (
-    <Card className="absolute backface-hidden w-full h-full">
+    <Card className="bg-amber-100 dark:bg-slate-950 absolute backface-hidden w-full h-full">
       <CardHeader>
         <CardTitle className="text-2xl m-auto">{deckName}</CardTitle>
       </CardHeader>

@@ -63,7 +63,7 @@ const TestResultCard: FC = () => {
   );
 
   return (
-    <Card className="flex flex-col w-full h-full">
+    <Card className="bg-amber-100 dark:bg-slate-950 flex flex-col w-full h-full">
       <CardHeader className="items-center pb-0">
         <CardTitle>Test Result</CardTitle>
       </CardHeader>

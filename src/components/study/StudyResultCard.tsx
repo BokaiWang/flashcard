@@ -101,7 +101,7 @@ const StudyResultCard = () => {
   };
 
   return (
-    <Card className="flex flex-col w-full h-full">
+    <Card className="bg-amber-100 dark:bg-slate-950 flex flex-col w-full h-full">
       <CardHeader>
         <CardTitle className="text-3xl text-center">Congratulations!</CardTitle>
         <CardDescription>
