@@ -6,9 +6,11 @@ import type {
 export const learningHistoryPropertySelector = ({
   decks,
   lastUsedCards,
+  theme,
 }: LearningHistoryState) => ({
   decks,
   lastUsedCards,
+  theme,
 });
 
 export const learningHistoryActionSelector = ({
@@ -16,9 +18,11 @@ export const learningHistoryActionSelector = ({
   updateCardLastReviewedAt,
   updateCardLearningState,
   updateLastUsedCards,
+  updateTheme,
 }: LearningHistoryActions) => ({
   addNewDeck,
   updateCardLastReviewedAt,
   updateCardLearningState,
   updateLastUsedCards,
+  updateTheme,
 });

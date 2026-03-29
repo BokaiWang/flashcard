@@ -2,7 +2,7 @@ import React, { type FC, type PropsWithChildren } from "react";
 
 const PageContainer: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-[calc(100vh-60px)] flex justify-center items-center">
       <div className="flex flex-col justify-center items-center w-11/12 h-11/12 sm:w-1/2 sm:h-3/4">
         {children}
       </div>

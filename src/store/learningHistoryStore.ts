@@ -7,6 +7,7 @@ import { devtools, persist } from "zustand/middleware";
 export type LearningHistoryState = {
   decks: { [key: string]: DeckType };
   lastUsedCards: FlashcardType[];
+  theme: "DARK" | "LIGHT";
 };
 
 export type LearningHistoryActions = {
@@ -18,6 +19,7 @@ export type LearningHistoryActions = {
   ) => void;
   updateCardLastReviewedAt: (deckName: string, cardId: string) => void;
   updateLastUsedCards: (lastUsedCards: FlashcardType[]) => void;
+  updateTheme: (theme: "DARK" | "LIGHT") => void;
 };
 
 const useLearningHistory = create<
@@ -28,6 +30,7 @@ const useLearningHistory = create<
       (set) => ({
         decks: {},
         lastUsedCards: [],
+        theme: "LIGHT",
         addNewDeck: (newDeck: DeckType) =>
           set(
             (prevState) => {
@@ -94,6 +97,8 @@ const useLearningHistory = create<
           ),
         updateLastUsedCards: (cards: FlashcardType[]) =>
           set(() => ({ lastUsedCards: cards }), false, "updateLastUsedCards"),
+        updateTheme: (theme: "DARK" | "LIGHT") =>
+          set(() => ({ theme }), false, "updateTheme"),
       }),
       { name: "learningHistoryStore" },
     ),
