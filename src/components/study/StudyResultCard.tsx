@@ -64,7 +64,10 @@ const StudyResultCard = () => {
           unlearnedCounts: 0,
           learnedCounts: 0,
         },
-      ) ?? {},
+      ) ?? {
+        unlearnedCounts: 0,
+        learnedCounts: 0,
+      },
     [selectedDeck],
   );
   const { unlearnedCounts, learnedCounts } = studyResult;
