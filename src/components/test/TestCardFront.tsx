@@ -1,4 +1,4 @@
-import React, { type FC, type PropsWithChildren } from "react";
+import { type FC, type PropsWithChildren } from "react";
 import type { FlashcardType } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useStudySettings from "@/store/studySettingsStore";

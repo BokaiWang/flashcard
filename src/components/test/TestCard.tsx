@@ -1,4 +1,4 @@
-import React, { useState, type FC, type PropsWithChildren } from "react";
+import { useState, type FC, type PropsWithChildren } from "react";
 import TestCardFront from "./TestCardFront";
 import TestCardBack from "./TestCardBack";
 import { cn } from "@/lib/utils";

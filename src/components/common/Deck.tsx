@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, type FC } from "react";
+import { useEffect, useMemo, type FC } from "react";
 import TestCard from "../test/TestCard";
 import { type LearningState, Mode } from "@/types";
 import { useLocation, useNavigate } from "react-router";

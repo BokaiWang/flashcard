@@ -1,4 +1,3 @@
-import React from "react";
 import PageContainer from "@/components/common/PageContainer";
 import Deck from "@/components/common/Deck";
 import { Progress } from "@/components/ui/progress";

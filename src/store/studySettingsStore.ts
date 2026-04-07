@@ -17,7 +17,7 @@ export type StudySettingsActions = {
 };
 
 const useStudySettings = create<StudySettingsState & StudySettingsActions>()(
-  (set, get, store) => ({
+  (set, _, store) => ({
     deckName: "",
     wordNumber: 0,
     customWordNumber: 0,

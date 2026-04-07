@@ -1,4 +1,3 @@
-import React from "react";
 import PageContainer from "@/components/common/PageContainer";
 import ResultCard from "@/components/test/TestResultCard";
 

@@ -1,4 +1,4 @@
-import React, { type FC, type PropsWithChildren } from "react";
+import { type FC, type PropsWithChildren } from "react";
 import type { LearningState, FlashcardType } from "@/types";
 import TestCardControls from "./TestCardControls";
 import PitchAccent from "../common/PitchAccent";

@@ -1,8 +1,4 @@
-import React, {
-  type ChangeEvent,
-  type FC,
-  type PropsWithChildren,
-} from "react";
+import { type ChangeEvent, type FC, type PropsWithChildren } from "react";
 import { Input } from "../ui/input";
 
 interface Props {
