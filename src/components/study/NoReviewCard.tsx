@@ -16,7 +16,7 @@ import {
   studySettingsPropertySelector,
 } from "@/selector/studySettings.selectors";
 
-const NoTestCard = () => {
+const NoReviewCard = () => {
   const { deckName } = useStudySettings(
     useShallow(studySettingsPropertySelector),
   );
@@ -36,7 +36,7 @@ const NoTestCard = () => {
       <CardContent className="text-4xl flex flex-col justify-center items-center gap-5 h-full mb-20">
         <div className="flex flex-col gap-3 justify-center items-center w-full py-6">
           <p>
-            Whoa! Jumping straight to the test? Try learning a few words first
+            Whoa! You have nothing to review~ Try learning a few words first!
           </p>
         </div>
       </CardContent>
@@ -47,4 +47,4 @@ const NoTestCard = () => {
   );
 };
 
-export default NoTestCard;
+export default NoReviewCard;

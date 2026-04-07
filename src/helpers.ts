@@ -45,9 +45,11 @@ export const getStudyCards = (
       ...shuffle(newCards).slice(0, Math.ceil(count * 0.3)),
     ];
   } else if (mode === Mode.NEW) {
-    selected = [...shuffle(newCards).slice(0, count)];
+    selected = !isEmpty(newCards) ? [...shuffle(newCards).slice(0, count)] : [];
   } else if (mode === Mode.REVIEW) {
-    selected = [...shuffle(reviewCards).slice(0, count)];
+    selected = !isEmpty(reviewCards)
+      ? [...shuffle(reviewCards).slice(0, count)]
+      : [];
   } else if (mode === Mode.TEST) {
     const selectedCards = isEmpty(reviewCards)
       ? []

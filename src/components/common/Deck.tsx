@@ -19,6 +19,7 @@ import NoTestCard from "../test/NoTestCard";
 import useTestSession from "@/store/testSession";
 import { testSessionActionSelector } from "@/selector/testSession.selectors";
 import useStudyCardsStore from "@/store/studyCardsStore";
+import NoReviewCard from "../study/NoReviewCard";
 
 const Deck: FC = () => {
   const { state: locationState } = useLocation();
@@ -123,14 +124,18 @@ const Deck: FC = () => {
   }, [historyDecks, deckName, selectedDeck]);
 
   if (mode !== Mode.TEST) {
-    return (
-      <StudyCard
-        flashcard={studyCards[studyCardIndex]}
-        goNext={goNext}
-        goPrevious={goPrevious}
-        isFirstCard={isFirstCard}
-      />
-    );
+    if (isEmpty(studyCards)) {
+      return <NoReviewCard />;
+    } else {
+      return (
+        <StudyCard
+          flashcard={studyCards[studyCardIndex]}
+          goNext={goNext}
+          goPrevious={goPrevious}
+          isFirstCard={isFirstCard}
+        />
+      );
+    }
   } else {
     if (isEmpty(studyCards)) {
       return <NoTestCard />;
