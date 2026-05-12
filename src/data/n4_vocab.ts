@@ -1,4 +1,6 @@
-export const n4Flashcards = [
+import type { FlashcardType } from "@/types";
+
+export const n4Flashcards: FlashcardType[] = [
   {
     id: "1",
     word: "寝坊する",

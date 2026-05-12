@@ -1,4 +1,6 @@
-export const n3Flashcards_clean = [
+import type { FlashcardType } from "@/types";
+
+export const n3Flashcards: FlashcardType[] = [
   {
     id: "1",
     word: "扱う",
